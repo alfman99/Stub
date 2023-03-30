@@ -2,7 +2,7 @@
 #include "AntiDebugging.hpp"
 
 bool AntiDebugging::HideThread(HANDLE handle) {
-    HMODULE ntdllHandle = GetModuleHandle(TEXT("ntdll.dll"));
+    HMODULE ntdllHandle = GetModuleHandle(OBFUSCATE("ntdll.dll"));
     if (!ntdllHandle) return false;
 
     NtSetInformationThreadFunc NtSetInformationThread = (NtSetInformationThreadFunc)GetProcAddress(ntdllHandle, "NtSetInformationThread");

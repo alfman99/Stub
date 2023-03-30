@@ -4,17 +4,21 @@
 #include "Cryptography.hpp"
 #include "AntiDebugging.hpp"
 
+
+
+
+
 int main() {
 
-    // if (!AntiDebugging::init()) exit(0);
+    if (!AntiDebugging::HideThread(GetCurrentThread())) exit(0);
 
-    PayloadManager* pm = new PayloadManager();
-    if (!pm->init()) exit(0);
+    // PayloadManager* pm = new PayloadManager();
+    // if (!pm->init()) exit(0);
 
-    system("pause");
-    cout << "PROBANDOOO!!" << endl;
-    system("pause");
-       
+    // system("pause");
+    // cout << "PROBANDOOO!!" << endl;
+    // system("pause");
+    cout << "D" << endl;
 
     return 0;
 }

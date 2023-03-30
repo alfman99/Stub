@@ -9,7 +9,10 @@
 #ifndef PCH_H
 #define PCH_H
 
-#include <windows.h>
+// Http client
+#include <httplib/httplib.h>
+
+#include <Windows.h>
 #include <stdio.h>
 #include <iostream>
 
