@@ -15,4 +15,6 @@ typedef NTSTATUS(__stdcall* NtSetInformationThreadFunc)(
 namespace AntiDebugging {
 	bool HideThread(HANDLE handle);
 	void KillIfDebugerPresent();
+
+    void LoopCheckDebugger(atomic<bool>& stop, unsigned int sleep);
 };

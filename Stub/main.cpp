@@ -4,21 +4,18 @@
 #include "Cryptography.hpp"
 #include "AntiDebugging.hpp"
 
-
-
-
-
 int main() {
+    atomic<bool> running(true);
+    thread checkDebuggers(AntiDebugging::LoopCheckDebugger, ref(running), 1000);
 
-    if (!AntiDebugging::HideThread(GetCurrentThread())) exit(0);
+    cin.get();
 
-    // PayloadManager* pm = new PayloadManager();
-    // if (!pm->init()) exit(0);
+    cout << AntiDebugging::HideThread(checkDebuggers.native_handle());
 
-    // system("pause");
-    // cout << "PROBANDOOO!!" << endl;
-    // system("pause");
-    cout << "D" << endl;
+    cin.get();
+
+    running = false;
+    checkDebuggers.join();
 
     return 0;
 }

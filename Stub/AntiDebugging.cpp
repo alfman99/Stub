@@ -17,3 +17,12 @@ void AntiDebugging::KillIfDebugerPresent() {
         exit(0);
     }
 }
+
+void AntiDebugging::LoopCheckDebugger(atomic<bool>& running, unsigned int sleep) {
+    do {
+        // AntiDebugging::KillIfDebugerPresent();
+        cout << "Checking if debugger" << endl;
+        cout << "Going to sleep";
+        this_thread::sleep_for(chrono::milliseconds(sleep));
+    } while (running);
+}
