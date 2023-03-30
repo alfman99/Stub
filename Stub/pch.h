@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include <plusaes/plusaes.hpp>
+#include <str_obfuscator/obfuscator.hpp>
 
 using namespace std;
 
