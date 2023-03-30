@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="AntiDebugging.cpp" />
     <ClCompile Include="Cryptography.cpp" />
+    <ClCompile Include="RunImp.cpp" />
     <ClCompile Include="PayloadManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -157,8 +158,12 @@
   <ItemGroup>
     <ClInclude Include="AntiDebugging.hpp" />
     <ClInclude Include="Cryptography.hpp" />
+    <ClInclude Include="RunImp.hpp" />
+    <ClInclude Include="DImports.hpp" />
+    <ClInclude Include="DllHelper.hpp" />
     <ClInclude Include="PayloadManager.hpp" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ProcPtr.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

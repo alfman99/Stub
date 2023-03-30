@@ -12,7 +12,9 @@
 // Http client
 #include <httplib/httplib.h>
 
-#include <Windows.h>
+#include <windows.h>
+#include <winternl.h>
+
 #include <stdio.h>
 #include <iostream>
 
