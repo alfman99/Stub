@@ -3,7 +3,6 @@
 
 // Constructor
 ThreadLoop::ThreadLoop() {
-    cout << "Father constructor" << endl;
     this->isRunning = false;
     this->tTask = nullptr;
 }

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "AntiDebugging.hpp"
 
-#include <TlHelp32.h>
-
 // Private member
 const vector<string> AntiDebugging::blacklistedStrings{
     // Debuggers
@@ -37,24 +35,26 @@ void AntiDebugging::KillIfDebuggerPresent() {
 }
 
 bool AntiDebugging::isBlacklistedAppRunning() {
+    RunImp* dImp = RunImp::GetInstance();
+
     bool found = false;
     PROCESSENTRY32 ProcessEntry = { 0 };
     ProcessEntry.dwSize = sizeof(PROCESSENTRY32W);
 
-    HANDLE handleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-    if (Process32First(handleSnapshot, &ProcessEntry)) {
+    HANDLE handleSnapshot = dImp->dCreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+    if (dImp->dProcess32First(handleSnapshot, &ProcessEntry)) {
         do {
             for (string element : blacklistedStrings) {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
-                    cout << "ProcessEntry.szExeFile:" << ProcessEntry.szExeFile << endl << "element:" << element << endl;
+                    cout << "ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << endl << "element: " << element << endl;
                     break;
                 }
             }
-        } while (Process32Next(handleSnapshot, &ProcessEntry));
+        } while (dImp->dProcess32Next(handleSnapshot, &ProcessEntry));
     }
 
-    CloseHandle(handleSnapshot);
+    dImp->dCloseHandle(handleSnapshot);
     return found;
 }
 
@@ -69,10 +69,12 @@ void AntiDebugging::KillIfBlacklistedPresent() {
 
 // This will be running in a separate thread
 void AntiDebugging::loop(atomic<bool>& running, unsigned int sleep) {
+    RunImp* dImp = RunImp::GetInstance();
+
     // Hide this thread
-    this->HideThread(GetCurrentThread());
+    this->HideThread(dImp->dGetCurrentThread());
     do {
-        cout << ":D" << endl;
+        cout << "AntiDebugging::loop" << endl;
         this->KillIfDebuggerPresent();
         this->KillIfBlacklistedPresent();
         this_thread::sleep_for(chrono::seconds(sleep));

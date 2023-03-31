@@ -19,4 +19,9 @@ public:
     // Functions
     decltype(IsDebuggerPresent)* dIsDebuggerPresent;
     decltype(NtSetInformationThread)* dNtSetInformationThread;
+    decltype(CreateToolhelp32Snapshot)* dCreateToolhelp32Snapshot;
+    decltype(Process32First)* dProcess32First;
+    decltype(Process32Next)* dProcess32Next;
+    decltype(CloseHandle)* dCloseHandle;
+    decltype(GetCurrentThread)* dGetCurrentThread;
 };

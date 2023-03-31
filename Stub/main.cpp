@@ -11,6 +11,7 @@ int main() {
     antiDbg.start();
     
     cin.get();
+
     cout << "bye" << endl;
 
     return 0;

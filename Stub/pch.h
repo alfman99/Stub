@@ -14,6 +14,7 @@
 
 #include <windows.h>
 #include <winternl.h>
+#include <TlHelp32.h>
 
 #include <stdio.h>
 #include <iostream>
