@@ -2,9 +2,19 @@
 #include "pch.h"
 #include "RunImp.hpp"
 
-namespace AntiDebugging {
+class AntiDebugging {
+protected:
+	atomic<bool> isRunning;
+	thread* tTask;
+
+	void LoopCheckDebugger(atomic<bool>& stop, unsigned int sleep);
 	bool HideThread(HANDLE handle);
 	void KillIfDebuggerPresent();
+    
+public:
+	AntiDebugging();
+	~AntiDebugging();
 
-    void LoopCheckDebugger(atomic<bool>& stop, unsigned int sleep);
+	void start();
+	void stop();
 };
