@@ -7,8 +7,8 @@ RunImp* RunImp::_singleton = nullptr;
 RunImp::RunImp() {
     DImports resolver;
 
-    this->dIsDebuggerPresent = resolver._kernel32["IsDebuggerPresent"];
-    this->dNtSetInformationThread = resolver._ntdll["NtSetInformationThread"];
+    this->dIsDebuggerPresent = resolver._kernel32[OBFUSCATE("IsDebuggerPresent")];
+    this->dNtSetInformationThread = resolver._ntdll[OBFUSCATE("NtSetInformationThread")];
 }
 
 RunImp* RunImp::GetInstance() {
