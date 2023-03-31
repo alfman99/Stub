@@ -84,6 +84,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -106,6 +108,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <FunctionOrder>
       </FunctionOrder>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,6 +126,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,10 +150,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <FunctionOrder>
       </FunctionOrder>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AntiDebugging.cpp" />
+    <ClCompile Include="AntiDumping.cpp" />
     <ClCompile Include="Cryptography.cpp" />
     <ClCompile Include="RunImp.cpp" />
     <ClCompile Include="PayloadManager.cpp" />
@@ -158,9 +167,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ThreadLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AntiDebugging.hpp" />
+    <ClInclude Include="AntiDumping.hpp" />
     <ClInclude Include="Cryptography.hpp" />
     <ClInclude Include="RunImp.hpp" />
     <ClInclude Include="DImports.hpp" />
@@ -169,6 +180,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="ProcPtr.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ThreadLoop.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Stub.rc" />

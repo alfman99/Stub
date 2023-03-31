@@ -39,6 +39,12 @@
     <ClCompile Include="RunImp.cpp">
       <Filter>Archivos de origen\RuntimeImports</Filter>
     </ClCompile>
+    <ClCompile Include="AntiDumping.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLoop.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -67,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="RunImp.hpp">
       <Filter>Archivos de encabezado\RuntimeImports</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiDumping.hpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLoop.hpp">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

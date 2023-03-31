@@ -1,20 +1,21 @@
 #pragma once
 #include "pch.h"
+#include "ThreadLoop.hpp"
 #include "RunImp.hpp"
 
-class AntiDebugging {
-protected:
-	atomic<bool> isRunning;
-	thread* tTask;
-
-	void LoopCheckDebugger(atomic<bool>& stop, unsigned int sleep);
-	bool HideThread(HANDLE handle);
-	void KillIfDebuggerPresent();
-    
+class AntiDebugging: public ThreadLoop {
 public:
-	AntiDebugging();
-	~AntiDebugging();
 
-	void start();
-	void stop();
+private:
+	static const vector<string> blacklistedStrings;
+
+	bool isBlacklistedAppRunning();
+	bool HideThread(HANDLE handle);
+	
+	void KillIfDebuggerPresent();
+	void KillIfBlacklistedPresent();
+	
+
+	// Define father abstract function
+	void loop(atomic<bool>& stop, unsigned int sleep);
 };

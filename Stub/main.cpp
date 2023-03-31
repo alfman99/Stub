@@ -1,20 +1,17 @@
 #include "pch.h"
 
-#include "RunImp.hpp"
 #include "AntiDebugging.hpp"
+#include "AntiDumping.hpp"
 
-#pragma optimize("\Ox", on)
+#pragma optimize("x", on)
 
 
 int main() {
-
-    AntiDebugging* antiDbg = new AntiDebugging();
-    antiDbg->start();
-
-    cout << "esperando..." << endl;
+    AntiDebugging antiDbg;
+    antiDbg.start();
+    
     cin.get();
-
-    delete antiDbg;
+    cout << "bye" << endl;
 
     return 0;
 }
