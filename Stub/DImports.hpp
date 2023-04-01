@@ -8,4 +8,5 @@ class DImports {
 public:
 	const DllHelper _kernel32{ OBFUSCATE("kernel32.dll")};
 	const DllHelper _ntdll{ OBFUSCATE("ntdll.dll") };
+	const DllHelper _user32{ OBFUSCATE("user32.dll") };
 };

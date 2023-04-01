@@ -73,9 +73,12 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
 }
 
 bool AntiDebugging::isBlacklistedWindowRunning() {
-    bool found = EnumWindows([](HWND hwnd, LPARAM lParam) {
-        string title(GetWindowTextLengthA(hwnd) + 1, '\0');
-        GetWindowTextA(hwnd, &title[0], title.size());
+    RunImp* dImpExt = RunImp::GetInstance();
+
+    bool found = dImpExt->dEnumWindows([](HWND hwnd, LPARAM lParam) {
+        RunImp* dImp = RunImp::GetInstance();
+        string title(dImp->dGetWindowTextLengthA(hwnd) + 1, '\0');
+        dImp->dGetWindowTextA(hwnd, &title[0], title.size());
         // tolowercase
         transform(title.begin(), title.end(), title.begin(), ::tolower);
 
@@ -123,7 +126,6 @@ void AntiDebugging::loop(atomic<bool>& running, unsigned int sleep) {
         this->KillIfDebuggerPresent();
         this->KillIfBlacklistedProcessPresent();
         this->KillIfBlacklistedWindowsPresent();
-
         this_thread::sleep_for(chrono::seconds(sleep));
     } while (running);
 

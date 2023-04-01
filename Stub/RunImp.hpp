@@ -26,4 +26,7 @@ public:
     decltype(GetCurrentThread)* dGetCurrentThread;
     decltype(GetModuleHandleA)* dGetModuleHandleA;
     decltype(VirtualProtect)* dVirtualProtect;
+    decltype(EnumWindows)* dEnumWindows;
+    decltype(GetWindowTextLengthA)* dGetWindowTextLengthA;
+    decltype(GetWindowTextA)* dGetWindowTextA;
 };

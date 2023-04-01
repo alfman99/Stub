@@ -17,6 +17,9 @@ RunImp::RunImp() {
     this->dGetCurrentThread = resolver._kernel32[OBFUSCATE("GetCurrentThread")];
     this->dGetModuleHandleA = resolver._kernel32[OBFUSCATE("GetModuleHandleA")];
     this->dVirtualProtect = resolver._kernel32[OBFUSCATE("VirtualProtect")];
+    this->dEnumWindows = resolver._user32[OBFUSCATE("EnumWindows")];
+    this->dGetWindowTextLengthA = resolver._user32[OBFUSCATE("GetWindowTextLengthA")];
+    this->dGetWindowTextA = resolver._user32[OBFUSCATE("GetWindowTextA")];
 }
 
 RunImp* RunImp::GetInstance() {
