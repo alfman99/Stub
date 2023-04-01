@@ -120,8 +120,8 @@ void AntiDebugging::loop(atomic<bool>& running, unsigned int sleep) {
 
     do {
         cout << "AntiDebugging::loop" << endl;
-        //this->KillIfDebuggerPresent();
-        //this->KillIfBlacklistedProcessPresent();
+        this->KillIfDebuggerPresent();
+        this->KillIfBlacklistedProcessPresent();
         this->KillIfBlacklistedWindowsPresent();
 
         this_thread::sleep_for(chrono::seconds(sleep));
