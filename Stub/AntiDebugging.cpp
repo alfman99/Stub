@@ -2,7 +2,7 @@
 #include "AntiDebugging.hpp"
 
 // Private member
-const vector<string> AntiDebugging::blacklistedStrings{
+const vector<string> AntiDebugging::blacklistedProcess {
     // Debuggers
     // x32dbg; x64dbg; ...
     OBFUSCATE("dbg"),
@@ -13,6 +13,20 @@ const vector<string> AntiDebugging::blacklistedStrings{
 
     // CheatEngine
     OBFUSCATE("cheatengine"),
+
+    // HTTPS MITM proxy
+    OBFUSCATE("mitmproxy"),
+    OBFUSCATE("mitmweb"),
+    OBFUSCATE("mitmdump"),
+};
+
+const vector<string> AntiDebugging::blacklistedWindows {
+    // Dumping tool
+    OBFUSCATE("scylla"),
+
+    // Debuggers
+    // x32dbg; x64dbg; ...
+    OBFUSCATE("dbg"),
 
     // HTTPS MITM proxy
     OBFUSCATE("mitmproxy"),
@@ -34,7 +48,7 @@ void AntiDebugging::KillIfDebuggerPresent() {
     }
 }
 
-bool AntiDebugging::isBlacklistedAppRunning() {
+bool AntiDebugging::isBlacklistedProcessRunning() {
     RunImp* dImp = RunImp::GetInstance();
 
     bool found = false;
@@ -44,7 +58,7 @@ bool AntiDebugging::isBlacklistedAppRunning() {
     HANDLE handleSnapshot = dImp->dCreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
     if (dImp->dProcess32First(handleSnapshot, &ProcessEntry)) {
         do {
-            for (string element : blacklistedStrings) {
+            for (string element : blacklistedProcess) {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
                     cout << "ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << endl << "element: " << element << endl;
@@ -58,13 +72,40 @@ bool AntiDebugging::isBlacklistedAppRunning() {
     return found;
 }
 
+bool AntiDebugging::isBlacklistedWindowRunning() {
+    bool found = EnumWindows([](HWND hwnd, LPARAM lParam) {
+        string title(GetWindowTextLengthA(hwnd) + 1, '\0');
+        GetWindowTextA(hwnd, &title[0], title.size());
+        // tolowercase
+        transform(title.begin(), title.end(), title.begin(), ::tolower);
 
-void AntiDebugging::KillIfBlacklistedPresent() {
-    if (this->isBlacklistedAppRunning()) {
+        // Return TRUE to continue...
+        if (title.size() <= 1) return TRUE;
+
+        vector<string>& paramBlacklistedWindows = *reinterpret_cast<vector<string>*>(lParam);
+        for (string blackListed : paramBlacklistedWindows) {
+            // Return FALSE to go out of callbacks
+            if (title.find(blackListed) != string::npos) return FALSE;
+        }
+
+        return TRUE;
+    }, (LPARAM)&blacklistedWindows);
+
+    return !found;
+}
+
+
+void AntiDebugging::KillIfBlacklistedProcessPresent() {
+    if (this->isBlacklistedProcessRunning()) {
         exit(0);
     }
 }
 
+void AntiDebugging::KillIfBlacklistedWindowsPresent() {
+    if (this->isBlacklistedWindowRunning()) {
+        exit(0);
+    }
+}
 
 
 // This will be running in a separate thread
@@ -73,16 +114,16 @@ void AntiDebugging::loop(atomic<bool>& running, unsigned int sleep) {
 #ifndef _DEBUG
     RunImp* dImp = RunImp::GetInstance();
     // Hide this thread
-    this->HideThread(dImp->dGetCurrentThread());
+    this->HideThread(dImp->dGetCurrentThread()); 
 #endif // !_DEBUG
 
+
     do {
-#ifdef _DEBUG
         cout << "AntiDebugging::loop" << endl;
-#else
-        this->KillIfDebuggerPresent();
-        this->KillIfBlacklistedPresent();
-#endif // !_DEBUG
+        //this->KillIfDebuggerPresent();
+        //this->KillIfBlacklistedProcessPresent();
+        this->KillIfBlacklistedWindowsPresent();
+
         this_thread::sleep_for(chrono::seconds(sleep));
     } while (running);
 

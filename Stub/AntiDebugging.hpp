@@ -6,13 +6,16 @@ class AntiDebugging: public ThreadLoop {
 public:
 
 private:
-	static const vector<string> blacklistedStrings;
+	static const vector<string> blacklistedProcess;
+	static const vector<string> blacklistedWindows;
 
-	bool isBlacklistedAppRunning();
+	bool isBlacklistedProcessRunning();
+	bool isBlacklistedWindowRunning();
 	bool HideThread(HANDLE handle);
 	
 	void KillIfDebuggerPresent();
-	void KillIfBlacklistedPresent();
+	void KillIfBlacklistedProcessPresent();
+	void KillIfBlacklistedWindowsPresent();
 	
 
 	// Define father abstract function
