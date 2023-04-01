@@ -22,6 +22,8 @@
 #include <plusaes/plusaes.hpp>
 #include <str_obfuscator/obfuscator.hpp>
 
+#include "RunImp.hpp"
+
 using namespace std;
 
 #endif //PCH_H

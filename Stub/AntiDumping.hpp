@@ -3,7 +3,6 @@
 #include "ThreadLoop.hpp"
 
 class AntiDumping {
-private:
-	bool DeletePEHeader();
-
+public:
+	static bool DeletePEHeader();
 };

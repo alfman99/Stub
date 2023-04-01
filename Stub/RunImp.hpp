@@ -24,4 +24,6 @@ public:
     decltype(Process32Next)* dProcess32Next;
     decltype(CloseHandle)* dCloseHandle;
     decltype(GetCurrentThread)* dGetCurrentThread;
+    decltype(GetModuleHandleA)* dGetModuleHandleA;
+    decltype(VirtualProtect)* dVirtualProtect;
 };

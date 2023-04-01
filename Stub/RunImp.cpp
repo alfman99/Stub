@@ -15,6 +15,8 @@ RunImp::RunImp() {
     this->dProcess32Next = resolver._kernel32[OBFUSCATE("Process32Next")];
     this->dCloseHandle = resolver._kernel32[OBFUSCATE("CloseHandle")];
     this->dGetCurrentThread = resolver._kernel32[OBFUSCATE("GetCurrentThread")];
+    this->dGetModuleHandleA = resolver._kernel32[OBFUSCATE("GetModuleHandleA")];
+    this->dVirtualProtect = resolver._kernel32[OBFUSCATE("VirtualProtect")];
 }
 
 RunImp* RunImp::GetInstance() {
