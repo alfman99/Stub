@@ -48,6 +48,14 @@ void AntiDebugging::KillIfDebuggerPresent() {
     }
 }
 
+void AntiDebugging::KillIfRemoteDebuggerPresent() {
+    RunImp* dImp = RunImp::GetInstance();
+    BOOL dPresent;
+    if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || !dPresent) {
+        exit(0);
+    }
+}
+
 bool AntiDebugging::isBlacklistedProcessRunning() {
     RunImp* dImp = RunImp::GetInstance();
 
@@ -116,4 +124,5 @@ void AntiDebugging::procedure() {
     this->KillIfDebuggerPresent();
     this->KillIfBlacklistedProcessPresent();
     this->KillIfBlacklistedWindowsPresent();
+    this->KillIfRemoteDebuggerPresent();
 }

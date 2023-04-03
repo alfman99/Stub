@@ -29,4 +29,6 @@ public:
     decltype(EnumWindows)* dEnumWindows;
     decltype(GetWindowTextLengthA)* dGetWindowTextLengthA;
     decltype(GetWindowTextA)* dGetWindowTextA;
+    decltype(CheckRemoteDebuggerPresent)* dCheckRemoteDebuggerPresent;
+    decltype(GetCurrentProcess)* dGetCurrentProcess;
 };

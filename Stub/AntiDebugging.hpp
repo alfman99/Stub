@@ -14,6 +14,7 @@ private:
 	static bool isBlacklistedWindowRunning();
 	
 	void KillIfDebuggerPresent();
+	void KillIfRemoteDebuggerPresent();
 	void KillIfBlacklistedProcessPresent();
 	void KillIfBlacklistedWindowsPresent();
 	

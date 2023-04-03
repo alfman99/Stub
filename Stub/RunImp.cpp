@@ -20,6 +20,8 @@ RunImp::RunImp() {
     this->dEnumWindows = resolver._user32[OBFUSCATE("EnumWindows")];
     this->dGetWindowTextLengthA = resolver._user32[OBFUSCATE("GetWindowTextLengthA")];
     this->dGetWindowTextA = resolver._user32[OBFUSCATE("GetWindowTextA")];
+    this->dCheckRemoteDebuggerPresent = resolver._kernel32[OBFUSCATE("CheckRemoteDebuggerPresent")];
+    this->dGetCurrentProcess = resolver._kernel32[OBFUSCATE("GetCurrentProcess")];
 }
 
 RunImp* RunImp::GetInstance() {
