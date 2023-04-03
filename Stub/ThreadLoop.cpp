@@ -1,5 +1,19 @@
 #include "pch.h"
 #include "ThreadLoop.hpp"
+#include "AntiDebugging.hpp"
+
+void ThreadLoop::loop(atomic<bool>& running, unsigned int sleep) {
+#ifndef _DEBUG
+    RunImp* dImp = RunImp::GetInstance();
+    // Hide this thread
+    AntiDebugging::HideThread(dImp->dGetCurrentThread());
+#endif // !_DEBUG
+
+    do {
+        this->procedure();
+        this_thread::sleep_for(chrono::seconds(sleep));
+    } while (running);
+}
 
 // Constructor
 ThreadLoop::ThreadLoop() {

@@ -1,13 +1,16 @@
 #pragma once
 #include "pch.h"
 
+
 class ThreadLoop {
 private:
 	atomic<bool> isRunning;
 	thread* tTask;
 
+	void loop(atomic<bool>& running, unsigned int sleep);
+
 protected:
-	virtual void loop(atomic<bool>& running, unsigned int sleep) = 0;
+	virtual void procedure() = 0;
 
 public:
 	ThreadLoop();

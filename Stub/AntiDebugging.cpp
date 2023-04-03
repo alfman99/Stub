@@ -110,23 +110,10 @@ void AntiDebugging::KillIfBlacklistedWindowsPresent() {
     }
 }
 
-
-// This will be running in a separate thread
-void AntiDebugging::loop(atomic<bool>& running, unsigned int sleep) {
-
-#ifndef _DEBUG
-    RunImp* dImp = RunImp::GetInstance();
-    // Hide this thread
-    this->HideThread(dImp->dGetCurrentThread()); 
-#endif // !_DEBUG
-
-
-    do {
-        cout << "AntiDebugging::loop" << endl;
-        this->KillIfDebuggerPresent();
-        this->KillIfBlacklistedProcessPresent();
-        this->KillIfBlacklistedWindowsPresent();
-        this_thread::sleep_for(chrono::seconds(sleep));
-    } while (running);
-
+// This will be running in a separate thread in a loop
+void AntiDebugging::procedure() {
+    cout << "AntiDebugging::procedure" << endl;
+    this->KillIfDebuggerPresent();
+    this->KillIfBlacklistedProcessPresent();
+    this->KillIfBlacklistedWindowsPresent();
 }
