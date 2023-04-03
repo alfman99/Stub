@@ -43,6 +43,9 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 
 void AntiDebugging::KillIfDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
+#ifdef _DEBUG
+    cout << "AntiDebugging::KillIfDebuggerPresent" << endl;
+#endif // _DEBUG
     if (dImp->dIsDebuggerPresent()) {
         exit(0);
     }
@@ -50,8 +53,11 @@ void AntiDebugging::KillIfDebuggerPresent() {
 
 void AntiDebugging::KillIfRemoteDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
+#ifdef _DEBUG
+    cout << "AntiDebugging::KillIfRemoteDebuggerPresent" << endl;
+#endif // _DEBUG
     BOOL dPresent;
-    if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || !dPresent) {
+    if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
         exit(0);
     }
 }
@@ -69,7 +75,9 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
             for (string element : blacklistedProcess) {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
+#ifdef _DEBUG
                     cout << "ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << endl << "element: " << element << endl;
+#endif // _DEBUG
                     break;
                 }
             }
@@ -107,12 +115,18 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
 
 
 void AntiDebugging::KillIfBlacklistedProcessPresent() {
+#ifdef _DEBUG
+    cout << "AntiDebugging::KillIfBlacklistedProcessPresent" << endl;
+#endif // _DEBUG
     if (this->isBlacklistedProcessRunning()) {
         exit(0);
     }
 }
 
 void AntiDebugging::KillIfBlacklistedWindowsPresent() {
+#ifdef _DEBUG
+    cout << "AntiDebugging::KillIfBlacklistedWindowsPresent" << endl;
+#endif // _DEBUG
     if (this->isBlacklistedWindowRunning()) {
         exit(0);
     }
@@ -120,7 +134,9 @@ void AntiDebugging::KillIfBlacklistedWindowsPresent() {
 
 // This will be running in a separate thread in a loop
 void AntiDebugging::procedure() {
+#ifdef _DEBUG
     cout << "AntiDebugging::procedure" << endl;
+#endif // _DEBUG
     this->KillIfDebuggerPresent();
     this->KillIfBlacklistedProcessPresent();
     this->KillIfBlacklistedWindowsPresent();

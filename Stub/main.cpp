@@ -12,7 +12,7 @@ int main() {
     AntiDebugging antiDbg;
     antiDbg.start();
 
-    AntiDumping::DeletePEHeader();
+    // AntiDumping::DeletePEHeader();
 
     cin.get();
 
