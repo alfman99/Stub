@@ -15,7 +15,7 @@ bool AntiDumping::DeletePEHeader() {
     SecureZeroMemory(selfHandle, sizeOfHeader);
 
     // Restore protection
-    VirtualProtect((LPVOID)selfHandle, sizeOfHeader, PAGE_READONLY, &oldProtect);
+    dImp->dVirtualProtect((LPVOID)selfHandle, sizeOfHeader, PAGE_READONLY, &oldProtect);
 
     return true;
 }
