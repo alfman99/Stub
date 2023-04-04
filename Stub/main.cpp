@@ -2,6 +2,7 @@
 
 #include "AntiDebugging.hpp"
 #include "AntiDumping.hpp"
+#include "Identification.hpp"
 
 #ifndef _DEBUG
 // If RELEASE
@@ -9,14 +10,20 @@
 #endif // !_DEBUG
 
 int main() {
+
+    // Init Antidebugging
     AntiDebugging antiDbg;
     antiDbg.start();
 
-    // AntiDumping::DeletePEHeader();
+    // Delete own PE header
+    AntiDumping::DeletePEHeader();
+
+    antiDbg.KillIfIntegrityCheckFails();
+    cout << Identification::GetHWID() << endl;
 
     cin.get();
 
-    cout << "bye" << endl;
+    // cout << "bye" << endl;
 
     return 0;
 }

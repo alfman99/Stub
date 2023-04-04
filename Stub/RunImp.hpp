@@ -31,4 +31,5 @@ public:
     decltype(GetWindowTextA)* dGetWindowTextA;
     decltype(CheckRemoteDebuggerPresent)* dCheckRemoteDebuggerPresent;
     decltype(GetCurrentProcess)* dGetCurrentProcess;
+    decltype(GetVolumeInformationA)* dGetVolumeInformationA;
 };
