@@ -5,6 +5,7 @@
 class AntiDebugging: public ThreadLoop {
 public:
 	static bool HideThread(HANDLE handle);
+	void KillIfIntegrityCheckFails();
 
 private:
 	static const vector<string> blacklistedProcess;
@@ -19,5 +20,5 @@ private:
 	void KillIfBlacklistedWindowsPresent();
 	
 	// Define father abstract function
-	void procedure();
+	void procedure() override;
 };

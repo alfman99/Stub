@@ -11,6 +11,7 @@ private:
 
 protected:
 	virtual void procedure() = 0;
+	bool checkIntegrity();
 
 public:
 	ThreadLoop();

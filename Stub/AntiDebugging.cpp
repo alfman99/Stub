@@ -41,6 +41,12 @@ bool AntiDebugging::HideThread(HANDLE handle) {
     return Status == 0x0;
 }
 
+void AntiDebugging::KillIfIntegrityCheckFails() {
+    if (!__super::checkIntegrity()) {
+        exit(0);
+    }
+}
+
 void AntiDebugging::KillIfDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
 #ifdef _DEBUG

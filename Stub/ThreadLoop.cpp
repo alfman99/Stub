@@ -38,3 +38,13 @@ void ThreadLoop::stop() {
     delete this->tTask;
     this->tTask = nullptr;
 }
+
+// Check if thread is really running or errors
+// Returns false if not passing integrity check
+bool ThreadLoop::checkIntegrity() {
+    if (!this->isRunning) return false;
+    if (!this->tTask) return false;
+    if (!this->tTask->joinable()) return false;
+
+    return true;
+}
