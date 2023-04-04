@@ -2,7 +2,8 @@
 
 #include "AntiDebugging.hpp"
 #include "AntiDumping.hpp"
-#include "Identification.hpp"
+#include "ServerRequests.hpp"
+#include "PayloadManager.hpp"
 
 #ifndef _DEBUG
 // If RELEASE
@@ -12,14 +13,26 @@
 int main() {
 
     // Init Antidebugging
-    AntiDebugging antiDbg;
-    antiDbg.start();
+    // AntiDebugging antiDbg;
+    // antiDbg.start();
 
     // Delete own PE header
-    AntiDumping::DeletePEHeader();
+    // AntiDumping::DeletePEHeader();
 
-    antiDbg.KillIfIntegrityCheckFails();
-    cout << Identification::GetHWID() << endl;
+    // antiDbg.KillIfIntegrityCheckFails();
+    string response = ServerRequests::GetDecryptKey("");
+
+    // Error handling
+    if (response.length() <= 0) {
+        cout << "error; response empty";
+        exit(0);
+    }
+
+    PayloadManager* pm = new PayloadManager();
+
+    pair<BYTE*,DWORD> dPayload = pm->GetDecryptedPayload(response);
+
+    cout << dPayload.first[0] << dPayload.first[1] << endl;
 
     cin.get();
 

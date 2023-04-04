@@ -10,8 +10,6 @@ public:
 	// Constructor
 	PayloadManager();
 
-	bool init();
-
-	pair<BYTE*, DWORD> GetEncryptedPayload();
+	pair<BYTE*, DWORD> GetDecryptedPayload(string response);
 };
 

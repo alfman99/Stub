@@ -1,11 +1,22 @@
 #pragma once
 #include "pch.h"
 
-#define PASS_SIZE 16
+#define KEY_SIZE 16
 #define IV_SIZE 16
 
+struct DecryptKey {
+	vector<BYTE> key;
+	vector<BYTE> iv;
+};
+
 class Cryptography {
+private:
+	DecryptKey data;
+
 public:
-	static void Decrypt(const BYTE* data, const DWORD size, BYTE* decrypted);
+	Cryptography(DecryptKey keyDec);
+
+	void Decrypt(const BYTE* data, const DWORD size, BYTE* decrypted);
+	static DecryptKey GetKeyFromResponse(string response);
 };
 
