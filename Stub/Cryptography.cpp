@@ -5,13 +5,18 @@ Cryptography::Cryptography(DecryptKey keyDec) {
 	this->data = keyDec;
 }
 
-void Cryptography::Decrypt(const BYTE* data, const DWORD size, BYTE* decryptedOut) {
-    plusaes::decrypt_cbc(data, size, &this->data.key[0], this->data.key.size(), (const unsigned char(*)[16]) & this->data.iv[0], decryptedOut, size, 0);
+vector<BYTE>* Cryptography::Decrypt(vector<BYTE>* encrypted) {
+	unsigned long paddedSize = 0;
+	vector<BYTE>* decrypted = new vector<BYTE>(encrypted->size());
+
+    plusaes::decrypt_cbc(&encrypted->data()[0], encrypted->size(), &this->data.key[0], this->data.key.size(), (const unsigned char(*)[16]) & this->data.iv[0], decrypted->data(), decrypted->size(), &paddedSize);
+
+	return decrypted;
 }
 
 DecryptKey Cryptography::GetKeyFromResponse(string response) {
-	std::vector<BYTE> key(KEY_SIZE);
-	std::vector<BYTE> iv(IV_SIZE);
+	vector<BYTE> key(KEY_SIZE);
+	vector<BYTE> iv(IV_SIZE);
 	const char* body_bytes = response.c_str();
 
 	for (int i = 0; i < KEY_SIZE; i++) {

@@ -4,12 +4,12 @@
 
 class PayloadManager {
 private:
-	pair<BYTE*, DWORD> rawData;
-	pair<BYTE*, DWORD> LoadRawData();
+	vector<BYTE>* encryptedData;
+	vector<BYTE>* LoadRawData();
 public:
 	// Constructor
 	PayloadManager();
 
-	pair<BYTE*, DWORD> GetDecryptedPayload(string response);
+	vector<BYTE>* GetDecryptedPayload(string response);
 };
 

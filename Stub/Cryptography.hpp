@@ -16,7 +16,7 @@ private:
 public:
 	Cryptography(DecryptKey keyDec);
 
-	void Decrypt(const BYTE* data, const DWORD size, BYTE* decrypted);
+	vector<BYTE>* Decrypt(vector<BYTE>* data);
 	static DecryptKey GetKeyFromResponse(string response);
 };
 

