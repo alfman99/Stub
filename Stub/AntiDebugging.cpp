@@ -43,7 +43,7 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 
 void AntiDebugging::KillIfIntegrityCheckFails() {
     if (!__super::checkIntegrity()) {
-        exit(0);
+        exit(-3);
     }
 }
 
@@ -53,7 +53,7 @@ void AntiDebugging::KillIfDebuggerPresent() {
     cout << "AntiDebugging::KillIfDebuggerPresent" << endl;
 #endif // _DEBUG
     if (dImp->dIsDebuggerPresent()) {
-        exit(0);
+        exit(-4);
     }
 }
 
@@ -64,7 +64,7 @@ void AntiDebugging::KillIfRemoteDebuggerPresent() {
 #endif // _DEBUG
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
-        exit(0);
+        exit(-5);
     }
 }
 
@@ -125,7 +125,7 @@ void AntiDebugging::KillIfBlacklistedProcessPresent() {
     cout << "AntiDebugging::KillIfBlacklistedProcessPresent" << endl;
 #endif // _DEBUG
     if (this->isBlacklistedProcessRunning()) {
-        exit(0);
+        exit(-1);
     }
 }
 
@@ -134,7 +134,7 @@ void AntiDebugging::KillIfBlacklistedWindowsPresent() {
     cout << "AntiDebugging::KillIfBlacklistedWindowsPresent" << endl;
 #endif // _DEBUG
     if (this->isBlacklistedWindowRunning()) {
-        exit(0);
+        exit(-2);
     }
 }
 
