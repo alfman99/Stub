@@ -7,6 +7,9 @@ void ThreadLoop::loop(atomic<bool>& running, unsigned int sleep) {
     RunImp* dImp = RunImp::GetInstance();
     // Hide this thread
     AntiDebugging::HideThread(dImp->dGetCurrentThread());
+#else
+    cout << "Sleep threadloop 6000" << endl;
+    this_thread::sleep_for(chrono::seconds(6000));
 #endif // !_DEBUG
 
     do {
