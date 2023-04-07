@@ -12,7 +12,7 @@ vector<BYTE>* PayloadManager::LoadRawData() {
     RunImp* dImp = RunImp::GetInstance();
 
     HMODULE m_hInstance = dImp->dGetModuleHandleA(NULL);
-    HRSRC hResource = FindResource(m_hInstance, MAKEINTRESOURCE(IDR_P_BIN1), "P_BIN");
+    HRSRC hResource = dImp->dFindResourceA(m_hInstance, MAKEINTRESOURCE(IDR_P_BIN1), "P_BIN");
 
     if (!hResource) {
         return nullptr;
