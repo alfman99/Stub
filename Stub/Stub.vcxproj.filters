@@ -57,6 +57,9 @@
     <ClCompile Include="ServerRequests.cpp">
       <Filter>Archivos de origen\AlwaysOnline</Filter>
     </ClCompile>
+    <ClCompile Include="RunProcess.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -98,6 +101,9 @@
     <ClInclude Include="ServerRequests.hpp">
       <Filter>Archivos de encabezado\AlwaysOnline</Filter>
     </ClInclude>
+    <ClInclude Include="RunProcess.hpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Stub.rc">
@@ -106,6 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="p_bin1.bin">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="p_bin2.bin">
       <Filter>Archivos de recursos</Filter>
     </None>
   </ItemGroup>

