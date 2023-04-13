@@ -17,23 +17,18 @@ RunProcess::~RunProcess() {
 #define MANUAL_MAP
 
 void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
-
 #ifdef MANUAL_MAP
-    ManualMappingDLL* mmdll = new ManualMappingDLL(payload);
-    mmdll->load();
-    mmdll->execute(OEP);
+    ManualMappingDLL mmdll = ManualMappingDLL(payload->data(), payload->size());
+    ULONG_PTR moduleBase = mmdll.load();
 #else
-    HMODULE handle = LoadLibraryA("app");
-    ULONG_PTR ep_va = OEP + (ULONG_PTR)handle;
+    ULONG_PTR moduleBase = (ULONG_PTR)LoadLibraryA("app");
+#endif // MANUAL_MAP
 
-    int(*new_main)() = (int(*)())ep_va;
-
-    new_main();
-#endif
-
-
+    ULONG_PTR ep_va = OEP + moduleBase;
+    int(*new_main)(int argc, char** argv, char** envp) = (int(*)(int, char**, char**))ep_va;
+    
+    this->dllThread = new thread(new_main, 0, nullptr, nullptr);
 #ifdef _DEBUG
     cout << "Thread started" << endl;
 #endif // _DEBUG
-
 }

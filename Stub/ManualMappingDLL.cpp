@@ -3,33 +3,45 @@
 
 void ManualMappingDLL::mapSections() {
 	// Map sections
-	PIMAGE_SECTION_HEADER pSectionHeader = IMAGE_FIRST_SECTION(this->pNtHeaders);
+
+	const IMAGE_DATA_DIRECTORY ImageDataReloc = this->pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
+	const IMAGE_DATA_DIRECTORY ImageDataImport = this->pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
+
 	for (int i = 0; i < this->pFileHeader->NumberOfSections; i++) {
-		if (pSectionHeader->SizeOfRawData) {
-			memcpy(reinterpret_cast<void*>(this->moduleBaseAddress + pSectionHeader->VirtualAddress), this->dPayload->data() + pSectionHeader->PointerToRawData, pSectionHeader->SizeOfRawData);
+		PIMAGE_SECTION_HEADER pCurrentHeader = reinterpret_cast<PIMAGE_SECTION_HEADER>((DWORD_PTR)this->pSectionHeaders + (i * sizeof(IMAGE_SECTION_HEADER)));
+		if (ImageDataReloc.VirtualAddress >= pCurrentHeader->VirtualAddress && ImageDataReloc.VirtualAddress < (pCurrentHeader->VirtualAddress + pCurrentHeader->Misc.VirtualSize))
+			lpImageRelocHeader = pCurrentHeader;
+		if (ImageDataImport.VirtualAddress >= pCurrentHeader->VirtualAddress && ImageDataImport.VirtualAddress < (pCurrentHeader->VirtualAddress + pCurrentHeader->Misc.VirtualSize))
+			lpImageImportHeader = pCurrentHeader;
+		if (pCurrentHeader->SizeOfRawData) {
+			RtlCopyMemory(reinterpret_cast<void*>(this->moduleBaseAddress + pCurrentHeader->VirtualAddress), this->dPayload + pCurrentHeader->PointerToRawData, pCurrentHeader->SizeOfRawData);
 		}
-		pSectionHeader++;
 	}
 }
 
 void ManualMappingDLL::resolveRelocations() {
 	// Resolve relocations
-	if (this->pOptionalHeader->DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].Size) {
-		PIMAGE_BASE_RELOCATION pBaseRelocation = reinterpret_cast<PIMAGE_BASE_RELOCATION>(this->moduleBaseAddress + this->pOptionalHeader->DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress);
-		while (pBaseRelocation->VirtualAddress) {
-			DWORD* pRelocationData = reinterpret_cast<DWORD*>(reinterpret_cast<DWORD>(pBaseRelocation) + sizeof(IMAGE_BASE_RELOCATION));
-			int relocationCount = (pBaseRelocation->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(DWORD);
-			for (int i = 0; i < relocationCount; i++) {
-				DWORD relocation = pRelocationData[i];
-				DWORD relocationType = relocation >> 12;
-				DWORD relocationOffset = relocation & 0xFFF;
-				if (relocationType == IMAGE_REL_BASED_HIGHLOW) {
-					*reinterpret_cast<DWORD*>(this->moduleBaseAddress + pBaseRelocation->VirtualAddress + relocationOffset) += this->moduleBaseAddress;
-				}
-			}
-			pBaseRelocation = reinterpret_cast<PIMAGE_BASE_RELOCATION>(reinterpret_cast<DWORD>(pBaseRelocation) + pBaseRelocation->SizeOfBlock);
+	DWORD relocOffset = 0;
+	IMAGE_DATA_DIRECTORY imageDataReloc = this->pOptionalHeader->DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
+
+	while (relocOffset < imageDataReloc.Size) {
+		PIMAGE_BASE_RELOCATION lpImageBaseRelocation = reinterpret_cast<PIMAGE_BASE_RELOCATION>(this->dPayload + lpImageRelocHeader->PointerToRawData + relocOffset);
+		relocOffset += sizeof(IMAGE_BASE_RELOCATION);
+		const DWORD NumberOfEntries = (lpImageBaseRelocation->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_RELOCATION_ENTRY);
+		
+		for (DWORD i = 0; i < NumberOfEntries; i++) {
+			PIMAGE_RELOCATION_ENTRY lpImageRelocationEntry = reinterpret_cast<PIMAGE_RELOCATION_ENTRY>(this->dPayload + lpImageRelocHeader->PointerToRawData + relocOffset);
+			relocOffset += sizeof(IMAGE_RELOCATION_ENTRY);
+
+			if (lpImageRelocationEntry->Type == 0) continue;
+
+			DWORD AddressLocation = this->moduleBaseAddress + lpImageBaseRelocation->VirtualAddress + lpImageRelocationEntry->Offset;
+			DWORD PatchedAddress = 0;
+			RtlCopyMemory(&PatchedAddress, (LPVOID)AddressLocation, sizeof(DWORD_PTR));
+			PatchedAddress += this->deltaAddress;
+			RtlCopyMemory((LPVOID)AddressLocation, &PatchedAddress, sizeof(DWORD_PTR));
 		}
-	}	
+	}
 }
 
 void ManualMappingDLL::resolveImports() {
@@ -71,23 +83,39 @@ void ManualMappingDLL::executeTLS() {
 void ManualMappingDLL::executeEntryPoint() {
 	// Execute entry point
 	if (this->pOptionalHeader->AddressOfEntryPoint) {
-		reinterpret_cast<DLL_ENTRY_POINT>(this->moduleBaseAddress + this->pOptionalHeader->AddressOfEntryPoint)(&this->dPayload->data()[0], DLL_PROCESS_ATTACH, nullptr);
+		reinterpret_cast<DLL_ENTRY_POINT>(this->moduleBaseAddress + this->pOptionalHeader->AddressOfEntryPoint)(this->dPayload, DLL_PROCESS_ATTACH, nullptr);
 	}
 }
 
-ManualMappingDLL::ManualMappingDLL(vector<BYTE>* dPayload) {
+ManualMappingDLL::ManualMappingDLL(BYTE* dPayload, DWORD size) {
 	this->dPayload = dPayload;
+	this->dPayloadSize = size;
+
+	// TEMP?
+	this->lpImageRelocHeader = nullptr;
+	this->lpImageImportHeader = nullptr;
 
 	// Get PE headers
-	this->pNtHeaders = reinterpret_cast<PIMAGE_NT_HEADERS>(this->dPayload->data() + reinterpret_cast<PIMAGE_DOS_HEADER>(this->dPayload->data())->e_lfanew);
+	this->pDosHeader = reinterpret_cast<PIMAGE_DOS_HEADER>(this->dPayload);
+	this->pNtHeaders = reinterpret_cast<PIMAGE_NT_HEADERS>(this->dPayload + this->pDosHeader->e_lfanew);
+	this->pSectionHeaders = reinterpret_cast<PIMAGE_SECTION_HEADER>(this->pNtHeaders + 1);
 	this->pOptionalHeader = &this->pNtHeaders->OptionalHeader;
 	this->pFileHeader = &this->pNtHeaders->FileHeader;
 
 	// Allocate memory for the DLL
 	this->moduleBaseAddress = reinterpret_cast<ULONG_PTR>(VirtualAlloc(nullptr, this->pOptionalHeader->SizeOfImage, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE));
+
+	// Delta between the base address of the DLL and the base address of the payload
+	this->deltaAddress = this->moduleBaseAddress - this->pOptionalHeader->ImageBase;
+
+	// Set the base address of the DLL
+	this->pOptionalHeader->ImageBase = this->moduleBaseAddress;
+	
+	// Copy headers
+	RtlCopyMemory((void*)this->moduleBaseAddress, (void*)dPayload, this->pOptionalHeader->SizeOfHeaders);
 }
 
-void ManualMappingDLL::load() {
+ULONG_PTR ManualMappingDLL::load() {
 	// Map sections
 	this->mapSections();
 
@@ -102,14 +130,7 @@ void ManualMappingDLL::load() {
 
 	// Execute entry point
 	this->executeEntryPoint();
+
+	return this->moduleBaseAddress;
 }
 
-void ManualMappingDLL::execute(DWORD address) {
-	// Execute the function
-	
-	ULONG_PTR ep_va = address + this->moduleBaseAddress;
-
-	int(*new_main)() = (int(*)())ep_va;
-
-	new_main();
-}
