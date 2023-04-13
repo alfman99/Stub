@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RunProcess.hpp"
 
+
 RunProcess::RunProcess() {
     this->dllThread = nullptr;
 }
@@ -13,14 +14,23 @@ RunProcess::~RunProcess() {
 	}
 }
 
+#define MANUAL_MAP
+
 void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
-    // TODO: Change for manual mapping of DLL (not using LoadLibraryA)
+
+#ifdef MANUAL_MAP
+    ManualMappingDLL* mmdll = new ManualMappingDLL(payload);
+    mmdll->load();
+    mmdll->execute(OEP);
+#else
     HMODULE handle = LoadLibraryA("app");
-
     ULONG_PTR ep_va = OEP + (ULONG_PTR)handle;
-    // ULONG_PTR ep_va = this->GetDllEP((DWORD)handle) + (ULONG_PTR)handle;
 
-    this->dllThread = new thread((void(*)())ep_va);
+    int(*new_main)() = (int(*)())ep_va;
+
+    new_main();
+#endif
+
 
 #ifdef _DEBUG
     cout << "Thread started" << endl;

@@ -60,6 +60,9 @@
     <ClCompile Include="RunProcess.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="ManualMappingDLL.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -102,6 +105,9 @@
       <Filter>Archivos de encabezado\AlwaysOnline</Filter>
     </ClInclude>
     <ClInclude Include="RunProcess.hpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ManualMappingDLL.hpp">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
