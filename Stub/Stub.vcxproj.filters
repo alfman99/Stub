@@ -25,6 +25,24 @@
     <Filter Include="Archivos de origen\AlwaysOnline">
       <UniqueIdentifier>{ccbd511f-a1a9-4f5a-9897-7c5553aaf04b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\RunProcess">
+      <UniqueIdentifier>{d52b0078-cc94-4343-b952-44429b142fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\Util">
+      <UniqueIdentifier>{f7ebb9dd-a203-41da-ae4d-83a0ce6388a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\RunProcess">
+      <UniqueIdentifier>{1bb1f2dd-6655-47f3-8578-a5a1bee43c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Util">
+      <UniqueIdentifier>{b3788757-3900-421f-8464-e7ed75e2b6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Protections">
+      <UniqueIdentifier>{7ff14142-2ebe-48d8-b286-5be2abd21c0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\Protections">
+      <UniqueIdentifier>{a7ae15b0-f530-4597-8661-834132d6b8d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,23 +51,8 @@
     <ClCompile Include="pch.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="PayloadManager.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Cryptography.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiDebugging.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="RunImp.cpp">
       <Filter>Archivos de origen\RuntimeImports</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiDumping.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadLoop.cpp">
-      <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Identification.cpp">
       <Filter>Archivos de origen\AlwaysOnline</Filter>
@@ -58,23 +61,29 @@
       <Filter>Archivos de origen\AlwaysOnline</Filter>
     </ClCompile>
     <ClCompile Include="RunProcess.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Archivos de origen\RunProcess</Filter>
     </ClCompile>
     <ClCompile Include="ManualMappingDLL.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Archivos de origen\RunProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Cryptography.cpp">
+      <Filter>Archivos de origen\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PayloadManager.cpp">
+      <Filter>Archivos de origen\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiDebugging.cpp">
+      <Filter>Archivos de origen\Protections</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiDumping.cpp">
+      <Filter>Archivos de origen\Protections</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLoop.cpp">
+      <Filter>Archivos de origen\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="PayloadManager.hpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Cryptography.hpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiDebugging.hpp">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -92,23 +101,32 @@
     <ClInclude Include="RunImp.hpp">
       <Filter>Archivos de encabezado\RuntimeImports</Filter>
     </ClInclude>
-    <ClInclude Include="AntiDumping.hpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadLoop.hpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Identification.hpp">
       <Filter>Archivos de encabezado\AlwaysOnline</Filter>
     </ClInclude>
     <ClInclude Include="ServerRequests.hpp">
       <Filter>Archivos de encabezado\AlwaysOnline</Filter>
     </ClInclude>
-    <ClInclude Include="RunProcess.hpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="ManualMappingDLL.hpp">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\RunProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="RunProcess.hpp">
+      <Filter>Archivos de encabezado\RunProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="PayloadManager.hpp">
+      <Filter>Archivos de encabezado\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Cryptography.hpp">
+      <Filter>Archivos de encabezado\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLoop.hpp">
+      <Filter>Archivos de encabezado\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiDumping.hpp">
+      <Filter>Archivos de encabezado\Protections</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiDebugging.hpp">
+      <Filter>Archivos de encabezado\Protections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
