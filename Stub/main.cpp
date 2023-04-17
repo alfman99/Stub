@@ -50,8 +50,9 @@ int main() {
         while (true) {
 #ifdef _DEBUG
             cout << "Integrity check..." << endl;
-#endif // _DEBUG
+#else
             antiDbg.KillIfIntegrityCheckFails();
+#endif // _DEBUG
             Sleep(1000);
         }
     });
@@ -60,8 +61,11 @@ int main() {
     // Delete own PE header
     AntiDumping::DeletePEHeader();
 
+    // Clear memory
     delete payloadManager;
     delete runProcess;
+
+    // Wait for thread to finish
     checkIntegrity.join();
 
     return 0;
