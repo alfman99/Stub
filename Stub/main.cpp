@@ -5,7 +5,6 @@
 #include "ServerRequests.hpp"
 #include "PayloadManager.hpp"
 #include "Identification.hpp"
-
 #include "RunProcess.hpp"
 
 #ifndef _DEBUG

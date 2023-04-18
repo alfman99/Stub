@@ -45,11 +45,17 @@ void ThreadLoop::stop() {
 // Check if thread is really running or errors
 // Returns false if not passing integrity check
 bool ThreadLoop::checkIntegrity() {
+
+    
+
     // Integrity checks only in release mode
 #ifndef _DEBUG
-    if (!this->isRunning) return false;
     if (!this->tTask) return false;
+    if (!this->isRunning) return false;
     if (!this->tTask->joinable()) return false;
+
+    DWORD threadState = WaitForSingleObject(this->tTask->native_handle(), 500);
+    if (threadState != WAIT_TIMEOUT) return false; // Thread is not running
 #endif // !_DEBUG
 
     return true;
