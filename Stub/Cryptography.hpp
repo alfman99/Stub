@@ -16,7 +16,7 @@ private:
 public:
 	Cryptography(DecryptKey keyDec);
 
-	vector<BYTE>* Decrypt(vector<BYTE>* data);
+	vector<BYTE>* Decrypt(vector<BYTE>* encrypted);
 	static DecryptKey GetKeyFromResponse(string response);
 };
 

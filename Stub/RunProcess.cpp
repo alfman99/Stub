@@ -26,7 +26,7 @@ void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
 
     ULONG_PTR ep_va = OEP + moduleBase;
     int(*new_main)(int argc, char** argv, char** envp) = (int(*)(int, char**, char**))ep_va;
-    
+        
     this->dllThread = new thread(new_main, 0, nullptr, nullptr);
 #ifdef _DEBUG
     cout << "Thread started" << endl;

@@ -2,18 +2,28 @@
 #include "pch.h"
 #include "Cryptography.hpp"
 
+#define PROJECT_ID_SIZE 21
+
+struct Payload {
+	char projectId[PROJECT_ID_SIZE];
+	DWORD OEP;
+};
+
 class PayloadManager {
 private:
-	vector<BYTE>* encryptedData;
-	DWORD OEP;
-
+	vector<BYTE>* rawData;
 	vector<BYTE>* LoadRawData();
-	DWORD LoadOEPData();
+
+	Payload* mappedData;
+	Payload* LoadAdditionalData();
+
 public:
 	// Constructor
 	PayloadManager();
+	~PayloadManager();
 
-	vector<BYTE>* GetDecryptedPayload(string response);
+	char* GetProjectId();
 	DWORD GetOEP();
+	vector<BYTE>* GetDecryptedPayload(string response);
 };
 

@@ -21,7 +21,11 @@ int main() {
     antiDbg.start();
 
     antiDbg.KillIfIntegrityCheckFails();
-    string response = ServerRequests::GetDecryptKey(Identification::GetHWID());
+    PayloadManager* payloadManager = new PayloadManager();
+
+
+    antiDbg.KillIfIntegrityCheckFails();
+    string response = ServerRequests::GetDecryptKey(payloadManager->GetProjectId(), Identification::GetHWID());
 
     // Error handling
     if (response.length() <= 0) {
@@ -31,12 +35,9 @@ int main() {
         exit(-6);
     };
 
-    PayloadManager* payloadManager = new PayloadManager();
 
     antiDbg.KillIfIntegrityCheckFails();
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
-
-    antiDbg.KillIfIntegrityCheckFails();
 
 #ifdef _DEBUG
     cout << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
