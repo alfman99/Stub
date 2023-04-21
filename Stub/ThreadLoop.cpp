@@ -45,18 +45,22 @@ void ThreadLoop::stop() {
 // Check if thread is really running or errors
 // Returns false if not passing integrity check
 bool ThreadLoop::checkIntegrity() {
-
-    
-
     // Integrity checks only in release mode
-#ifndef _DEBUG
+#ifdef _DEBUG // IF DEBUG
+    if (!this->tTask) cout << "[ThreadLoop::checkIntegrity()] Thread pointer is NULL" << endl;
+    if (!this->isRunning) cout << "[ThreadLoop::checkIntegrity()] Thread is not running" << endl;
+    if (!this->tTask->joinable()) cout << "[ThreadLoop::checkIntegrity()] Thread is not joinable" << endl;
+
+    DWORD threadState = WaitForSingleObject(this->tTask->native_handle(), 500);
+    if (threadState != WAIT_TIMEOUT) cout << "[ThreadLoop::checkIntegrity()] State of thread is not WAIT_TIMEOUT; " << threadState << endl; // Thread is not running
+#else // IF RELEASE
     if (!this->tTask) return false;
     if (!this->isRunning) return false;
     if (!this->tTask->joinable()) return false;
 
     DWORD threadState = WaitForSingleObject(this->tTask->native_handle(), 500);
     if (threadState != WAIT_TIMEOUT) return false; // Thread is not running
-#endif // !_DEBUG
+#endif
 
     return true;
 }
