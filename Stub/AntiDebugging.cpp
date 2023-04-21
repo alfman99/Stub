@@ -48,26 +48,26 @@ void AntiDebugging::KillIfIntegrityCheckFails() {
 }
 
 void AntiDebugging::KillIfDebuggerPresent() {
-#ifdef _DEBUG
-    cout << "AntiDebugging::KillIfDebuggerPresent" << endl;
-#else // _DEBUG
     RunImp* dImp = RunImp::GetInstance();
     if (dImp->dIsDebuggerPresent()) {
+#ifdef _DEBUG
+        cout << "[AntiDebugging::KillIfDebuggerPresent()] FOUND DEBUGGER" << endl;
+#else // _DEBUG
         exit(-4);
-    }
 #endif
+    }
 }
 
 void AntiDebugging::KillIfRemoteDebuggerPresent() {
-#ifdef _DEBUG
-    cout << "AntiDebugging::KillIfRemoteDebuggerPresent" << endl;
-#else // _DEBUG
     RunImp* dImp = RunImp::GetInstance();
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
+#ifdef _DEBUG
+        cout << "[AntiDebugging::KillIfRemoteDebuggerPresent()] FOUND REMOTE DEBUGGER" << endl;
+#else // _DEBUG
         exit(-5);
+#endif // _DEBUG
     }
-#endif
 }
 
 bool AntiDebugging::isBlacklistedProcessRunning() {
