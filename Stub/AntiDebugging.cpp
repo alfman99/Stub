@@ -117,13 +117,24 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
         vector<string>& paramBlacklistedWindows = *reinterpret_cast<vector<string>*>(lParam);
         for (string blackListed : paramBlacklistedWindows) {
             // Return FALSE to go out of callbacks
-            if (title.find(blackListed) != string::npos) return FALSE;
+            if (title.find(blackListed) != string::npos) {
+#ifdef _DEBUG
+                cout << "[AntiDebugging::isBlacklistedWindowRunning()] title Found: " << title << " blackListed String: " << blackListed << endl;
+#endif // _DEBUG
+                return FALSE;
+            }
         }
 
         return TRUE;
     }, (LPARAM)&blacklistedWindows);
 
+#ifdef _DEBUG
+    return false
+#else
     return !found;
+#endif
+
+
 }
 
 
