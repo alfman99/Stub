@@ -13,7 +13,6 @@
 #endif // !_DEBUG
 
 
-
 int main() {
     // Init Antidebugging
     AntiDebugging antiDbg;
@@ -48,11 +47,7 @@ int main() {
 
     thread checkIntegrity = thread([&antiDbg]() {
         while (true) {
-#ifdef _DEBUG
-            cout << "Integrity check..." << endl;
-#else
             antiDbg.KillIfIntegrityCheckFails();
-#endif // _DEBUG
             Sleep(1000);
         }
     });

@@ -3,13 +3,11 @@
 #include "AntiDebugging.hpp"
 
 void ThreadLoop::loop(atomic<bool>& running, unsigned int sleep) {
-#ifndef _DEBUG
     RunImp* dImp = RunImp::GetInstance();
+
+#ifndef _DEBUG
     // Hide this thread
     AntiDebugging::HideThread(dImp->dGetCurrentThread());
-#else
-    cout << "Sleep threadloop 6000" << endl;
-    this_thread::sleep_for(chrono::seconds(6000));
 #endif // !_DEBUG
 
     do {

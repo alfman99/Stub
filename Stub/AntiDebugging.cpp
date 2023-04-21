@@ -44,10 +44,10 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 void AntiDebugging::KillIfIntegrityCheckFails() {
     if (!__super::checkIntegrity()) {
 #ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfIntegrityCheckFails()] __super::checkIntegrity didn't pass integrity check" << endl;
+        cout << "[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED" << endl;
 #else // _DEBUG
         exit(-3);
-#endif // _DEBUG
+#endif
     }
 }
 
@@ -55,7 +55,7 @@ void AntiDebugging::KillIfDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
     if (dImp->dIsDebuggerPresent()) {
 #ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfDebuggerPresent()] FOUND DEBUGGER" << endl;
+        cout << "[AntiDebugging::KillIfDebuggerPresent()] TRIGGERED" << endl;
 #else // _DEBUG
         exit(-4);
 #endif
@@ -67,10 +67,10 @@ void AntiDebugging::KillIfRemoteDebuggerPresent() {
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
 #ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfRemoteDebuggerPresent()] FOUND REMOTE DEBUGGER" << endl;
+        cout << "[AntiDebugging::KillIfRemoteDebuggerPresent()] TRIGGERED" << endl;
 #else // _DEBUG
         exit(-5);
-#endif // _DEBUG
+#endif
     }
 }
 
@@ -143,27 +143,29 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
 
 
 void AntiDebugging::KillIfBlacklistedProcessPresent() {
-#ifdef _DEBUG
-    cout << "AntiDebugging::KillIfBlacklistedProcessPresent" << endl;
-#endif // _DEBUG
     if (this->isBlacklistedProcessRunning()) {
+#ifdef _DEBUG
+        cout << "[AntiDebugging::KillIfBlacklistedProcessPresent()] TRIGGERED" << endl;
+#else // _DEBUG
         exit(-1);
+#endif // _DEBUG
     }
 }
 
 void AntiDebugging::KillIfBlacklistedWindowsPresent() {
-#ifdef _DEBUG
-    cout << "AntiDebugging::KillIfBlacklistedWindowsPresent" << endl;
-#endif // _DEBUG
     if (this->isBlacklistedWindowRunning()) {
+#ifdef _DEBUG
+        cout << "[AntiDebugging::KillIfBlacklistedWindowsPresent()] TRIGGERED" << endl;
+#else
         exit(-2);
+#endif // _DEBUG
     }
 }
 
 // This will be running in a separate thread in a loop
 void AntiDebugging::procedure() {
 #ifdef _DEBUG
-    cout << "AntiDebugging::procedure" << endl;
+    cout << "[AntiDebugging::procedure()]" << endl;
 #endif // _DEBUG
     this->KillIfDebuggerPresent();
     this->KillIfBlacklistedProcessPresent();
