@@ -8,12 +8,22 @@
 #include "RunProcess.hpp"
 
 #ifndef _DEBUG
-// If RELEASE
+// IF RELEASE
 #pragma optimize("x", on)
 #endif // !_DEBUG
 
 
-int main() {
+int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
+
+#ifdef _DEBUG
+    // Instanciate console so I can log things through cout
+    FILE* cmdOut;
+    AllocConsole();
+    freopen_s(&cmdOut, "CONOUT$", "w", stdout); // only output no input
+    cout << "-------------- Debug mode --------------" << endl;
+#endif // _DEBUG
+
+
     // Init Antidebugging
     AntiDebugging antiDbg;
     antiDbg.start();
@@ -62,6 +72,13 @@ int main() {
 
     // Wait for thread to finish
     checkIntegrity.join();
+
+#ifdef _DEBUG
+    cout << "-------------- Exit --------------" << endl;
+    // Clear console
+    fclose(cmdOut);
+    FreeConsole();
+#endif // _DEBUG
 
     return 0;
 
