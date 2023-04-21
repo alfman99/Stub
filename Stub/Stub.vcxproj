@@ -158,6 +158,7 @@
     <ClCompile Include="AntiDumping.cpp" />
     <ClCompile Include="Cryptography.cpp" />
     <ClCompile Include="Identification.cpp" />
+    <ClCompile Include="Logging.cpp" />
     <ClCompile Include="ManualMappingDLL.cpp" />
     <ClCompile Include="RunImp.cpp" />
     <ClCompile Include="PayloadManager.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="AntiDumping.hpp" />
     <ClInclude Include="Cryptography.hpp" />
     <ClInclude Include="Identification.hpp" />
+    <ClInclude Include="Logging.hpp" />
     <ClInclude Include="ManualMappingDLL.hpp" />
     <ClInclude Include="RunImp.hpp" />
     <ClInclude Include="DImports.hpp" />

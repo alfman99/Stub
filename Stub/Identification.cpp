@@ -31,7 +31,7 @@ string Identification::GetHWID() {
     picosha2::hash256_hex_string(hwid, hashed);
 
 #ifdef _DEBUG
-	cout << "HWID: " << hashed << endl;
+	Logging::mGreen("HWID: " + hashed);
 #endif // _DEBUG
 
     return hashed;

@@ -16,8 +16,9 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "RunImp.hpp"
-
 using namespace std;
+#include "RunImp.hpp"
+#include "Logging.hpp"
+
 
 #endif //PCH_H

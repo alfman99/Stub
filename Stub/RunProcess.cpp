@@ -28,7 +28,7 @@ void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
     int(*new_main)(int argc, char** argv, char** envp) = (int(*)(int, char**, char**))ep_va;
         
     this->dllThread = new thread(new_main, 0, nullptr, nullptr);
-#ifdef _DEBUG
-    cout << "Thread started" << endl;
-#endif // _DEBUG
+
+
+    Logging::mGreen("Protected application thread started");
 }

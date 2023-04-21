@@ -43,9 +43,8 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 
 void AntiDebugging::KillIfIntegrityCheckFails() {
     if (!__super::checkIntegrity()) {
-#ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED" << endl;
-#else // _DEBUG
+        Logging::mRed( "[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED" );
+#ifndef _DEBUG
         exit(-3);
 #endif
     }
@@ -54,9 +53,8 @@ void AntiDebugging::KillIfIntegrityCheckFails() {
 void AntiDebugging::KillIfDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
     if (dImp->dIsDebuggerPresent()) {
-#ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfDebuggerPresent()] TRIGGERED" << endl;
-#else // _DEBUG
+        Logging::mRed( "[AntiDebugging::KillIfDebuggerPresent()] TRIGGERED" );
+#ifndef _DEBUG
         exit(-4);
 #endif
     }
@@ -66,9 +64,8 @@ void AntiDebugging::KillIfRemoteDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
-#ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfRemoteDebuggerPresent()] TRIGGERED" << endl;
-#else // _DEBUG
+        Logging::mRed( "[AntiDebugging::KillIfRemoteDebuggerPresent()] TRIGGERED" );
+#ifndef _DEBUG
         exit(-5);
 #endif
     }
@@ -88,7 +85,7 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
 #ifdef _DEBUG
-                    cout << "[AntiDebugging::isBlacklistedProcessRunning()] ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << " element: " << element << endl;
+                    Logging::mRed("[AntiDebugging::isBlacklistedProcessRunning()] ProcessEntry.szExeFile: " + string(ProcessEntry.szExeFile) + " element: " + element);
 #endif // _DEBUG
                     break;
                 }
@@ -122,9 +119,7 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
         for (string blackListed : paramBlacklistedWindows) {
             // Return FALSE to go out of callbacks
             if (title.find(blackListed) != string::npos) {
-#ifdef _DEBUG
-                cout << "[AntiDebugging::isBlacklistedWindowRunning()] title Found: " << title << " blackListed String: " << blackListed << endl;
-#endif // _DEBUG
+                Logging::mRed("[AntiDebugging::isBlacklistedWindowRunning()] title Found: " + title + " blackListed String: " + blackListed);
                 return FALSE;
             }
         }
@@ -144,28 +139,26 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
 
 void AntiDebugging::KillIfBlacklistedProcessPresent() {
     if (this->isBlacklistedProcessRunning()) {
-#ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfBlacklistedProcessPresent()] TRIGGERED" << endl;
-#else // _DEBUG
+        Logging::mRed("[AntiDebugging::KillIfBlacklistedProcessPresent()] TRIGGERED");
+#ifndef _DEBUG
         exit(-1);
-#endif // _DEBUG
+#endif
     }
 }
 
 void AntiDebugging::KillIfBlacklistedWindowsPresent() {
     if (this->isBlacklistedWindowRunning()) {
-#ifdef _DEBUG
-        cout << "[AntiDebugging::KillIfBlacklistedWindowsPresent()] TRIGGERED" << endl;
-#else
+        Logging::mRed("[AntiDebugging::KillIfBlacklistedWindowsPresent()] TRIGGERED");
+#ifndef _DEBUG
         exit(-2);
-#endif // _DEBUG
+#endif
     }
 }
 
 // This will be running in a separate thread in a loop
 void AntiDebugging::procedure() {
 #ifdef _DEBUG
-    cout << "[AntiDebugging::procedure()]" << endl;
+    Logging::mLog("[AntiDebugging::procedure()]");
 #endif // _DEBUG
     this->KillIfDebuggerPresent();
     this->KillIfBlacklistedProcessPresent();
