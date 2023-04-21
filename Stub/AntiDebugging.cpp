@@ -43,7 +43,11 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 
 void AntiDebugging::KillIfIntegrityCheckFails() {
     if (!__super::checkIntegrity()) {
+#ifdef _DEBUG
+        cout << "[AntiDebugging::KillIfIntegrityCheckFails()] __super::checkIntegrity didn't pass integrity check" << endl;
+#else // _DEBUG
         exit(-3);
+#endif // _DEBUG
     }
 }
 
