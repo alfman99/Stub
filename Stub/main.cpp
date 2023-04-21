@@ -49,8 +49,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     RunProcess* runProcess = new RunProcess();
     runProcess->RunProcessFromMemory(dPayload, payloadManager->GetOEP());
 
-    thread checkIntegrity = thread([&antiDbg]() {
-        while (true) {
+    atomic<bool> integrityCheckRunning = true;
+    thread checkIntegrity = thread([&]() {
+        while (integrityCheckRunning) {
             antiDbg.KillIfIntegrityCheckFails();
             Sleep(1000);
         }
@@ -65,6 +66,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     delete payloadManager;
 
     // Wait for thread to finish
+    integrityCheckRunning = false;
     checkIntegrity.join();
 
     // Destroy console
