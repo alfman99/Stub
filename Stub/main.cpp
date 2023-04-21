@@ -61,8 +61,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     AntiDumping::DeletePEHeader();
 
     // Clear memory
-    delete payloadManager;
     delete runProcess;
+    delete payloadManager;
 
     // Wait for thread to finish
     checkIntegrity.join();
