@@ -48,24 +48,26 @@ void AntiDebugging::KillIfIntegrityCheckFails() {
 }
 
 void AntiDebugging::KillIfDebuggerPresent() {
-    RunImp* dImp = RunImp::GetInstance();
 #ifdef _DEBUG
     cout << "AntiDebugging::KillIfDebuggerPresent" << endl;
-#endif // _DEBUG
+#else // _DEBUG
+    RunImp* dImp = RunImp::GetInstance();
     if (dImp->dIsDebuggerPresent()) {
         exit(-4);
     }
+#endif
 }
 
 void AntiDebugging::KillIfRemoteDebuggerPresent() {
-    RunImp* dImp = RunImp::GetInstance();
 #ifdef _DEBUG
     cout << "AntiDebugging::KillIfRemoteDebuggerPresent" << endl;
-#endif // _DEBUG
+#else // _DEBUG
+    RunImp* dImp = RunImp::GetInstance();
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
         exit(-5);
     }
+#endif
 }
 
 bool AntiDebugging::isBlacklistedProcessRunning() {
@@ -82,7 +84,7 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
 #ifdef _DEBUG
-                    cout << "ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << endl << "element: " << element << endl;
+                    cout << "[AntiDebugging::isBlacklistedProcessRunning()] ProcessEntry.szExeFile: " << ProcessEntry.szExeFile << " element: " << element << endl;
 #endif // _DEBUG
                     break;
                 }
@@ -91,7 +93,12 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
     }
 
     dImp->dCloseHandle(handleSnapshot);
+
+#ifdef _DEBUG
+    return false;
+#else
     return found;
+#endif
 }
 
 bool AntiDebugging::isBlacklistedWindowRunning() {
