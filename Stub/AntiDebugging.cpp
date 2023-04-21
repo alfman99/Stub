@@ -129,7 +129,7 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
     }, (LPARAM)&blacklistedWindows);
 
 #ifdef _DEBUG
-    return false
+    return false;
 #else
     return !found;
 #endif
