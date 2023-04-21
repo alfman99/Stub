@@ -38,7 +38,7 @@ int main() {
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
 #ifdef _DEBUG
-    cout << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
+    cout << "First 3 bytes of decrypted payload: " << dPayload->data()[0] << dPayload->data()[1] << dPayload->data()[2] << endl;
 #endif // _DEBUG
 
     antiDbg.KillIfIntegrityCheckFails();
