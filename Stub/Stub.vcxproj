@@ -158,6 +158,7 @@
     <ClCompile Include="AntiDumping.cpp" />
     <ClCompile Include="Cryptography.cpp" />
     <ClCompile Include="Identification.cpp" />
+    <ClCompile Include="JunkRoutines.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="ManualMappingDLL.cpp" />
     <ClCompile Include="RunImp.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="AntiDumping.hpp" />
     <ClInclude Include="Cryptography.hpp" />
     <ClInclude Include="Identification.hpp" />
+    <ClInclude Include="JunkRoutines.hpp" />
     <ClInclude Include="Logging.hpp" />
     <ClInclude Include="ManualMappingDLL.hpp" />
     <ClInclude Include="RunImp.hpp" />

@@ -24,7 +24,16 @@ string Identification::GetHDSerial() {
 
 string Identification::GetHWID() {
     // Create string with both CPU and HD ID
-    string hwid = GetCPUId() + "|" + GetHDSerial();
+    string CPUId = GetCPUId();
+	string HDSerial = GetHDSerial();
+
+#ifdef _DEBUG
+	Logging::mGreen("CPU ID: " + CPUId);
+	Logging::mGreen("HD Serial: " + HDSerial);
+#endif // _DEBUG
+
+	
+	string hwid = CPUId + "|" + HDSerial;
     string hashed;
 
     // Hash it

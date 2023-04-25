@@ -14,7 +14,6 @@
 
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
-
     FILE* cmdOUT = Logging::InitConsole();
     RunImp* dImp = RunImp::GetInstance(); 
 

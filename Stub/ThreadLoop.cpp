@@ -45,31 +45,23 @@ void ThreadLoop::stop() {
 bool ThreadLoop::checkIntegrity() {
     // Integrity checks only in release mode
     if (!this->tTask) {
-#ifdef _DEBUG
         Logging::mRed("[ThreadLoop::checkIntegrity()] Thread pointer is NULL");
-#endif
         return false;
     }
 
     if (!this->isRunning) {
-#ifdef _DEBUG
         Logging::mRed("[ThreadLoop::checkIntegrity()] Thread is not running");
-#endif // _DEBUG
         return false;
     }
 
     if (!this->tTask->joinable()) {
-#ifdef _DEBUG
         Logging::mRed("[ThreadLoop::checkIntegrity()] Thread is not joinable");
-#endif
 		return false;
 	}
 
     DWORD threadState = WaitForSingleObject(this->tTask->native_handle(), 500);
     if (threadState != WAIT_TIMEOUT) {
-#ifdef _DEBUG
         Logging::mRed("[ThreadLoop::checkIntegrity()] State of thread is not WAIT_TIMEOUT; " + threadState); // Thread is not running
-#endif
         return false;
     }
 

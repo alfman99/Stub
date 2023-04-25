@@ -1,4 +1,5 @@
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <limits>
 
 // ================
@@ -25,14 +26,7 @@ public:
         unsigned long long cs = (count + 1) * seed;
         return (sq(sh(sq(sh(sm(cs))) + cs + seed)) + cs) >> 32;
     }
-    
-    // we use Box-Muller as our method to obtain a normal distribution
-    // we add the lowest positive double value to prevent log(0) from being run
-    static constexpr double BoxMuller(double a, double b, double sigma, double mu) {
-        const double e = std::numeric_limits<double>::min();
-        return sqrt(-2.0 * log(a+e)) * cos(2.0 * M_PI * b) * sigma + mu;
-    }
-    
+        
     // we define our seed based off of the __DATE__ and __TIME__ macros
     // this allows us to have different compile-time seed values
     static constexpr ull Day =
@@ -129,6 +123,3 @@ public:
     int chance = poly_random(c); \
     if (chance == 0) { f; } \
 }
-
-// random normal distribution
-#define poly_normal(sigma,mu) (poly::BoxMuller(poly_double(),poly_double(),sigma,mu))

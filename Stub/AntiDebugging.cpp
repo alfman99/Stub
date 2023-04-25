@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AntiDebugging.hpp"
+#include "JunkRoutines.hpp"
 
 // Private member
 const vector<string> AntiDebugging::blacklistedProcess {
@@ -42,6 +43,7 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 }
 
 void AntiDebugging::KillIfIntegrityCheckFails() {
+    JunkRoutines::DoJunk(rand() % 4 + 1);
     if (!__super::checkIntegrity()) {
         Logging::mRed( "[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED" );
 #ifndef _DEBUG

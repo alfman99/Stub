@@ -84,6 +84,9 @@
     <ClCompile Include="Logging.cpp">
       <Filter>Archivos de origen\Util</Filter>
     </ClCompile>
+    <ClCompile Include="JunkRoutines.cpp">
+      <Filter>Archivos de origen\Protections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="Logging.hpp">
       <Filter>Archivos de encabezado\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="JunkRoutines.hpp">
+      <Filter>Archivos de encabezado\Protections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
