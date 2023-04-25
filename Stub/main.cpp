@@ -16,10 +16,15 @@
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
 
     FILE* cmdOUT = Logging::InitConsole();
+    RunImp* dImp = RunImp::GetInstance(); 
 
 
     // Init Antidebugging
     AntiDebugging antiDbg;
+#ifndef _DEBUG
+    // Hide this thread
+    AntiDebugging::HideThread(dImp->dGetCurrentThread());
+#endif // !_DEBUG
     antiDbg.start();
 
 
