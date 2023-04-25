@@ -17,6 +17,9 @@ RunProcess::~RunProcess() {
 #define MANUAL_MAP
 
 void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
+
+    RunImp* dImp = RunImp::GetInstance();
+
 #ifdef MANUAL_MAP
     ManualMappingDLL mmdll = ManualMappingDLL(payload->data(), payload->size());
     ULONG_PTR moduleBase = mmdll.load();
@@ -29,6 +32,10 @@ void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
         
     this->dllThread = new thread(new_main, 0, nullptr, nullptr);
 
+#ifndef _DEBUG
+    // Hide this thread
+	AntiDebugging::HideThread(this->dllThread->native_handle());
+#endif // !_DEBUG
 
     Logging::mGreen("Protected application thread started");
 }

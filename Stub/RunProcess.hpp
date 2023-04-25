@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "ManualMappingDLL.hpp"
+#include "AntiDebugging.hpp"
 
 class RunProcess {
 private:
