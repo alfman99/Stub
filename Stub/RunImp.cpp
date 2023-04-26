@@ -26,6 +26,7 @@ RunImp::RunImp() {
     this->dLoadResource = resolver._kernel32[cryptor::create("LoadResource").decrypt()];
     this->dLockResource = resolver._kernel32[cryptor::create("LockResource").decrypt()];
     this->dSizeofResource = resolver._kernel32[cryptor::create("SizeofResource").decrypt()];
+    this->dGetDriveTypeA = resolver._kernel32[cryptor::create("GetDriveTypeA").decrypt()];
 }
 
 RunImp* RunImp::GetInstance() {

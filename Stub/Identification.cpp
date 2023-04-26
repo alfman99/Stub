@@ -16,10 +16,28 @@ string Identification::GetCPUId() {
 
 // Get harddrive serial
 string Identification::GetHDSerial() {
-	RunImp* dImp = RunImp::GetInstance();
-	DWORD serial;
-	dImp->dGetVolumeInformationA(NULL, NULL, NULL, &serial, NULL, NULL, NULL, NULL);
-	return to_string(serial);
+    RunImp* dImp = RunImp::GetInstance();
+
+    char windowsDrive = 'A';
+    UINT driveType;
+
+    while (windowsDrive <= 'Z') {
+        string driveLetter = string(1, windowsDrive) + ":\\";
+        driveType = GetDriveTypeA(driveLetter.c_str());
+
+        if (driveType == DRIVE_FIXED) {
+            DWORD serialNumber;
+            if (dImp->dGetVolumeInformationA(driveLetter.c_str(), NULL, 0, &serialNumber, NULL, NULL, NULL, 0)) {
+                string retVal = to_string(serialNumber);
+                LOG("Hard drive letter: " + driveLetter + ", serial number: " + retVal, Logging::Green);
+                return retVal;
+            }
+        }
+
+        windowsDrive++;
+    }
+
+    return "";
 }
 
 string Identification::GetHWID() {

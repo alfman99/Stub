@@ -36,4 +36,5 @@ public:
     decltype(LoadResource)* dLoadResource;
     decltype(LockResource)* dLockResource;
     decltype(SizeofResource)* dSizeofResource;
+    decltype(GetDriveTypeA)* dGetDriveTypeA;
 };
