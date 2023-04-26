@@ -22,7 +22,7 @@ FILE* Logging::InitConsole() {
 	FILE* cmdOut;
 	AllocConsole();
 	freopen_s(&cmdOut, "CONOUT$", "w", stdout); // only output no input
-	Logging::mLog("-------------- Debug mode --------------");
+	LOG("-------------- Debug mode --------------", Logging::White);
 
 	return cmdOut;
 #endif // _DEBUG
@@ -32,7 +32,7 @@ FILE* Logging::InitConsole() {
 
 void Logging::DestroyConsole(FILE* cmdOut) {
 #ifdef _DEBUG
-	Logging::mLog("-------------- Exit --------------");
+	LOG("-------------- Exit --------------", Logging::White);
 
 	// Clear console
 	fclose(cmdOut);

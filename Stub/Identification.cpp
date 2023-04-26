@@ -28,8 +28,8 @@ string Identification::GetHWID() {
 	string HDSerial = GetHDSerial();
 
 #ifdef _DEBUG
-	Logging::mGreen("CPU ID: " + CPUId);
-	Logging::mGreen("HD Serial: " + HDSerial);
+	LOG("CPU ID: " + CPUId, Logging::Green);
+	LOG("HD Serial: " + HDSerial, Logging::Green);
 #endif // _DEBUG
 
 	
@@ -40,7 +40,7 @@ string Identification::GetHWID() {
     picosha2::hash256_hex_string(hwid, hashed);
 
 #ifdef _DEBUG
-	Logging::mGreen("HWID: " + hashed);
+	LOG("HWID: " + hashed, Logging::Green);
 #endif // _DEBUG
 
     return hashed;

