@@ -2,37 +2,38 @@
 #include "AntiDebugging.hpp"
 #include "JunkRoutines.hpp"
 
+
 // Private member
 const vector<string> AntiDebugging::blacklistedProcess {
     // Debuggers
     // x32dbg; x64dbg; ...
-    OBFUSCATE("dbg"),
+    cryptor::create("dbg").decrypt(),
 
     // IDA
-    OBFUSCATE("ida.exe"),
-    OBFUSCATE("ida64.exe"),
+    cryptor::create("ida.exe").decrypt(),
+    cryptor::create("ida64.exe").decrypt(),
 
     // CheatEngine
-    OBFUSCATE("cheatengine"),
+    cryptor::create("cheatengine").decrypt(),
 
     // HTTPS MITM proxy
-    OBFUSCATE("mitmproxy"),
-    OBFUSCATE("mitmweb"),
-    OBFUSCATE("mitmdump"),
+    cryptor::create("mitmproxy").decrypt(),
+    cryptor::create("mitmweb").decrypt(),
+    cryptor::create("mitmdump").decrypt(),
 };
 
 const vector<string> AntiDebugging::blacklistedWindows {
     // Dumping tool
-    OBFUSCATE("scylla"),
+    cryptor::create("scylla").decrypt(),
 
     // Debuggers
     // x32dbg; x64dbg; ...
-    OBFUSCATE("dbg"),
+    cryptor::create("dbg").decrypt(),
 
     // HTTPS MITM proxy
-    OBFUSCATE("mitmproxy"),
-    OBFUSCATE("mitmweb"),
-    OBFUSCATE("mitmdump"),
+    cryptor::create("mitmproxy").decrypt(),
+    cryptor::create("mitmweb").decrypt(),
+    cryptor::create("mitmdump").decrypt(),
 };
 
 // Private functions
@@ -45,7 +46,7 @@ bool AntiDebugging::HideThread(HANDLE handle) {
 void AntiDebugging::KillIfIntegrityCheckFails() {
     JunkRoutines::DoJunk(rand() % 4 + 1);
     if (!__super::checkIntegrity()) {
-        Logging::mRed( "[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED" );
+        LOG("[AntiDebugging::KillIfIntegrityCheckFails()] TRIGGERED", Logging::Red);
 #ifndef _DEBUG
         exit(-3);
 #endif
@@ -55,7 +56,7 @@ void AntiDebugging::KillIfIntegrityCheckFails() {
 void AntiDebugging::KillIfDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
     if (dImp->dIsDebuggerPresent()) {
-        Logging::mRed( "[AntiDebugging::KillIfDebuggerPresent()] TRIGGERED" );
+        LOG("[AntiDebugging::KillIfDebuggerPresent()] TRIGGERED", Logging::Red);
 #ifndef _DEBUG
         exit(-4);
 #endif
@@ -66,7 +67,7 @@ void AntiDebugging::KillIfRemoteDebuggerPresent() {
     RunImp* dImp = RunImp::GetInstance();
     BOOL dPresent;
     if (!dImp->dCheckRemoteDebuggerPresent(dImp->dGetCurrentProcess(), &dPresent) || dPresent) {
-        Logging::mRed( "[AntiDebugging::KillIfRemoteDebuggerPresent()] TRIGGERED" );
+        LOG("[AntiDebugging::KillIfRemoteDebuggerPresent()] TRIGGERED", Logging::Red);
 #ifndef _DEBUG
         exit(-5);
 #endif
@@ -86,9 +87,7 @@ bool AntiDebugging::isBlacklistedProcessRunning() {
             for (string element : blacklistedProcess) {
                 if (string(ProcessEntry.szExeFile).find(element) != string::npos) {
                     found = true;
-#ifdef _DEBUG
-                    Logging::mRed("[AntiDebugging::isBlacklistedProcessRunning()] ProcessEntry.szExeFile: " + string(ProcessEntry.szExeFile) + " element: " + element);
-#endif // _DEBUG
+                    LOG("[AntiDebugging::isBlacklistedProcessRunning()] ProcessEntry.szExeFile: " + string(ProcessEntry.szExeFile) + " element: " + element, Logging::Red);
                     break;
                 }
             }
@@ -121,7 +120,7 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
         for (string blackListed : paramBlacklistedWindows) {
             // Return FALSE to go out of callbacks
             if (title.find(blackListed) != string::npos) {
-                Logging::mRed("[AntiDebugging::isBlacklistedWindowRunning()] title Found: " + title + " blackListed String: " + blackListed);
+                LOG("[AntiDebugging::isBlacklistedWindowRunning()] title Found: " + title + " blackListed String: " + blackListed, Logging::Red)
                 return FALSE;
             }
         }
@@ -141,7 +140,7 @@ bool AntiDebugging::isBlacklistedWindowRunning() {
 
 void AntiDebugging::KillIfBlacklistedProcessPresent() {
     if (this->isBlacklistedProcessRunning()) {
-        Logging::mRed("[AntiDebugging::KillIfBlacklistedProcessPresent()] TRIGGERED");
+        LOG("[AntiDebugging::KillIfBlacklistedProcessPresent()] TRIGGERED", Logging::Red)
 #ifndef _DEBUG
         exit(-1);
 #endif
@@ -150,7 +149,7 @@ void AntiDebugging::KillIfBlacklistedProcessPresent() {
 
 void AntiDebugging::KillIfBlacklistedWindowsPresent() {
     if (this->isBlacklistedWindowRunning()) {
-        Logging::mRed("[AntiDebugging::KillIfBlacklistedWindowsPresent()] TRIGGERED");
+        LOG("[AntiDebugging::KillIfBlacklistedWindowsPresent()] TRIGGERED", Logging::Red)
 #ifndef _DEBUG
         exit(-2);
 #endif
@@ -159,9 +158,7 @@ void AntiDebugging::KillIfBlacklistedWindowsPresent() {
 
 // This will be running in a separate thread in a loop
 void AntiDebugging::procedure() {
-#ifdef _DEBUG
-    Logging::mLog("[AntiDebugging::procedure()]");
-#endif // _DEBUG
+    LOG("[AntiDebugging::procedure()]", Logging::White);
     this->KillIfDebuggerPresent();
     this->KillIfBlacklistedProcessPresent();
     this->KillIfBlacklistedWindowsPresent();

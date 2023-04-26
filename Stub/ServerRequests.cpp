@@ -20,8 +20,8 @@ string base64Encode(const char* value) {
 }
 
 string ServerRequests::GetDecryptKey(const char* projectId, const string HWID) {
-	httplib::Client cli(OBFUSCATE("http://localhost:3000"));
-	auto res = cli.Get(OBFUSCATE("/api/auth?hwid=") + HWID + OBFUSCATE("&id=") + base64Encode(projectId));
+	httplib::Client cli(cryptor::create("http://localhost:3000").decrypt());
+	auto res = cli.Get(cryptor::create("/api/auth?hwid=").decrypt() + HWID + cryptor::create("&id=").decrypt() + base64Encode(projectId));
 	if (res.error() != httplib::Error::Success) return "";
 	if (res->status != 200) return "";
 

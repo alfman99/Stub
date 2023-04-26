@@ -3,6 +3,7 @@
 
 
 void Logging::printFormat(string message) {
+#ifdef _DEBUG
 	time_t rawTime;
 	struct tm timeInfo;
 	char buffer[80];
@@ -13,6 +14,7 @@ void Logging::printFormat(string message) {
 	strftime(buffer, sizeof(buffer), "[%H:%M:%S]", &timeInfo);
 
 	cout << buffer << " " << message << endl;
+#endif
 }
 
 FILE* Logging::InitConsole() {
@@ -38,21 +40,21 @@ void Logging::DestroyConsole(FILE* cmdOut) {
 #endif // _DEBUG
 }
 
-void Logging::mLog(string message) {
+void Logging::White(string message) {
 #ifdef _DEBUG
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xF);
 	Logging::printFormat(message);
 #endif
 }
 
-void Logging::mGreen(string message) {
+void Logging::Green(string message) {
 #ifdef _DEBUG
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
 	Logging::printFormat(message);
 #endif // _DEBUG
 }
 
-void Logging::mRed(string message) {
+void Logging::Red(string message) {
 #ifdef _DEBUG
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
 	Logging::printFormat(message);

@@ -6,7 +6,7 @@
 // Http client
 #include <httplib/httplib.hpp>
 #include <plusaes/plusaes.hpp>
-#include <str_obfuscator/obfuscator.hpp>
+#include <str_obfuscator/str_obfuscator.hpp>
 #include <picosha2/picosha2.hpp>
 #include <polymorph-lib/polymorph-lib.hpp>
 

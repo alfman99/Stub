@@ -33,7 +33,7 @@ void JunkRoutines::DoJunk(const int number) {
 
 void JunkRoutines::Junk1() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk1");
+	LOG("Junk1", Logging::Green);
 #endif
 	FILETIME lpFileTime;
 	if (!DosDateTimeToFileTime(0x21, 0x13CF, &lpFileTime)) {
@@ -43,7 +43,7 @@ void JunkRoutines::Junk1() {
 
 void JunkRoutines::Junk2() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk2");
+	LOG("Junk2", Logging::Green);
 #endif
 	if (GetTickCount() % 10 == 420) {
 		poly_random_chance(poly_random(10), Junk3());
@@ -52,17 +52,17 @@ void JunkRoutines::Junk2() {
 
 void JunkRoutines::Junk3() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk3");
+	LOG("Junk3", Logging::Green);
 #endif
 	LPSTR lpShortPath = NULL;
-	if (GetShortPathNameA(OBFUSCATE("./queck.exe"), lpShortPath, NULL) == 0) {
+	if (GetShortPathNameA(cryptor::create("./queck.exe").decrypt(), lpShortPath, NULL) == 0) {
 		poly_random_chance(poly_random(10), Junk4());
 	}
 }
 
 void JunkRoutines::Junk4() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk4");
+	LOG("Junk4", Logging::Green);
 #endif
 	SYSTEM_POWER_STATUS status;
 	if (!GetSystemPowerStatus(&status)) {
@@ -72,7 +72,7 @@ void JunkRoutines::Junk4() {
 
 void JunkRoutines::Junk5() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk5");
+	LOG("Junk5", Logging::Green);
 #endif
 	UINT_PTR out = GetSystemMetrics(SM_CXSCREEN);
 	out += GetSystemMetrics(SM_CYSCREEN);
@@ -84,7 +84,7 @@ void JunkRoutines::Junk5() {
 
 void JunkRoutines::Junk6() {
 #if LOG_JUNK_ROUTINES_DEBUG == 1
-	Logging::mGreen("Junk6");
+	LOG("Junk6", Logging::Green);
 #endif
 	char drivestr[3];
 	char buf[MAX_PATH];

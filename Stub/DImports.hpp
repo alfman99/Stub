@@ -6,7 +6,7 @@
 
 class DImports {
 public:
-	const DllHelper _kernel32{ OBFUSCATE("kernel32.dll")};
-	const DllHelper _ntdll{ OBFUSCATE("ntdll.dll") };
-	const DllHelper _user32{ OBFUSCATE("user32.dll") };
+	const DllHelper _kernel32{ cryptor::create("kernel32.dll").decrypt() };
+	const DllHelper _ntdll{ cryptor::create("ntdll.dll").decrypt() };
+	const DllHelper _user32{ cryptor::create("user32.dll").decrypt() };
 };

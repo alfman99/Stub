@@ -1,3 +1,3 @@
-# String Obfuscator in Compile Time
+# StringObfuscator
 
-https://github.com/Snowapril/String-Obfuscator-In-Compile-Time
+https://github.com/katursis/StringObfuscator

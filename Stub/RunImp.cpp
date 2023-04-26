@@ -7,26 +7,25 @@ RunImp* RunImp::_singleton = nullptr;
 RunImp::RunImp() {
     DImports resolver;
 
-    this->dIsDebuggerPresent = resolver._kernel32[OBFUSCATE("IsDebuggerPresent")];
-    this->dNtSetInformationThread = resolver._ntdll[OBFUSCATE("NtSetInformationThread")];
-
-    this->dCreateToolhelp32Snapshot = resolver._kernel32[OBFUSCATE("CreateToolhelp32Snapshot")];
-    this->dProcess32First = resolver._kernel32[OBFUSCATE("Process32First")];
-    this->dProcess32Next = resolver._kernel32[OBFUSCATE("Process32Next")];
-    this->dCloseHandle = resolver._kernel32[OBFUSCATE("CloseHandle")];
-    this->dGetCurrentThread = resolver._kernel32[OBFUSCATE("GetCurrentThread")];
-    this->dGetModuleHandleA = resolver._kernel32[OBFUSCATE("GetModuleHandleA")];
-    this->dVirtualProtect = resolver._kernel32[OBFUSCATE("VirtualProtect")];
-    this->dEnumWindows = resolver._user32[OBFUSCATE("EnumWindows")];
-    this->dGetWindowTextLengthA = resolver._user32[OBFUSCATE("GetWindowTextLengthA")];
-    this->dGetWindowTextA = resolver._user32[OBFUSCATE("GetWindowTextA")];
-    this->dCheckRemoteDebuggerPresent = resolver._kernel32[OBFUSCATE("CheckRemoteDebuggerPresent")];
-    this->dGetCurrentProcess = resolver._kernel32[OBFUSCATE("GetCurrentProcess")];
-    this->dGetVolumeInformationA = resolver._kernel32[OBFUSCATE("GetVolumeInformationA")];
-    this->dFindResourceA = resolver._kernel32[OBFUSCATE("FindResourceA")];
-    this->dLoadResource = resolver._kernel32[OBFUSCATE("LoadResource")];
-    this->dLockResource = resolver._kernel32[OBFUSCATE("LockResource")];
-    this->dSizeofResource = resolver._kernel32[OBFUSCATE("SizeofResource")];
+    this->dIsDebuggerPresent = resolver._kernel32[cryptor::create("IsDebuggerPresent").decrypt()];
+    this->dNtSetInformationThread = resolver._ntdll[cryptor::create("NtSetInformationThread").decrypt()];
+    this->dCreateToolhelp32Snapshot = resolver._kernel32[cryptor::create("CreateToolhelp32Snapshot").decrypt()];
+    this->dProcess32First = resolver._kernel32[cryptor::create("Process32First").decrypt()];
+    this->dProcess32Next = resolver._kernel32[cryptor::create("Process32Next").decrypt()];
+    this->dCloseHandle = resolver._kernel32[cryptor::create("CloseHandle").decrypt()];
+    this->dGetCurrentThread = resolver._kernel32[cryptor::create("GetCurrentThread").decrypt()];
+    this->dGetModuleHandleA = resolver._kernel32[cryptor::create("GetModuleHandleA").decrypt()];
+    this->dVirtualProtect = resolver._kernel32[cryptor::create("VirtualProtect").decrypt()];
+    this->dEnumWindows = resolver._user32[cryptor::create("EnumWindows").decrypt()];
+    this->dGetWindowTextLengthA = resolver._user32[cryptor::create("GetWindowTextLengthA").decrypt()];
+    this->dGetWindowTextA = resolver._user32[cryptor::create("GetWindowTextA").decrypt()];
+    this->dCheckRemoteDebuggerPresent = resolver._kernel32[cryptor::create("CheckRemoteDebuggerPresent").decrypt()];
+    this->dGetCurrentProcess = resolver._kernel32[cryptor::create("GetCurrentProcess").decrypt()];
+    this->dGetVolumeInformationA = resolver._kernel32[cryptor::create("GetVolumeInformationA").decrypt()];
+    this->dFindResourceA = resolver._kernel32[cryptor::create("FindResourceA").decrypt()];
+    this->dLoadResource = resolver._kernel32[cryptor::create("LoadResource").decrypt()];
+    this->dLockResource = resolver._kernel32[cryptor::create("LockResource").decrypt()];
+    this->dSizeofResource = resolver._kernel32[cryptor::create("SizeofResource").decrypt()];
 }
 
 RunImp* RunImp::GetInstance() {
