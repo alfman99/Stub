@@ -2,7 +2,7 @@
 #include "JunkRoutines.hpp"
 
 // 1 = Enable logging of junk routines, 0 = Disable logging of junk routines
-#define LOG_JUNK_ROUTINES_DEBUG 1
+#define LOG_JUNK_ROUTINES_DEBUG 0
 
 // Determine order of execution in compile time of junk routines so its harder to understand what is going on
 void JunkRoutines::DoJunk(const int number) {
