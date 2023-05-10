@@ -9,7 +9,7 @@
 
 #ifndef _DEBUG
 // IF RELEASE
-#pragma optimize("gity", on)
+#pragma optimize("x", on)
 #endif // !_DEBUG
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
