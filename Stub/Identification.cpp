@@ -29,7 +29,6 @@ string Identification::GetHDSerial() {
             DWORD serialNumber;
             if (dImp->dGetVolumeInformationA(driveLetter.c_str(), NULL, 0, &serialNumber, NULL, NULL, NULL, 0)) {
                 string retVal = to_string(serialNumber);
-                LOG("Hard drive letter: " + driveLetter + ", serial number: " + retVal, Logging::Green);
                 return retVal;
             }
         }

@@ -36,7 +36,11 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
     // Error handling
     if (response.length() <= 0) {
-        LOG("[Error] Empty HTTP response from server", Logging::Red);
+#ifdef _DEBUG
+        LOG("[Error] Empty HTTP response from server, failed auth", Logging::Red);
+        antiDbg.stop();
+        system("pause");
+#endif // !_DEBUG
         exit(-6);
     };
 

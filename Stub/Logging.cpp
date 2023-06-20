@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Logging.hpp"
 
+#define WHITE_COLOR 0xF
 
 void Logging::printFormat(string message) {
 #ifdef _DEBUG
@@ -42,7 +43,7 @@ void Logging::DestroyConsole(FILE* cmdOut) {
 
 void Logging::White(string message) {
 #ifdef _DEBUG
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xF);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE_COLOR);
 	Logging::printFormat(message);
 #endif
 }
@@ -51,6 +52,7 @@ void Logging::Green(string message) {
 #ifdef _DEBUG
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
 	Logging::printFormat(message);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE_COLOR);
 #endif // _DEBUG
 }
 
@@ -58,5 +60,6 @@ void Logging::Red(string message) {
 #ifdef _DEBUG
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
 	Logging::printFormat(message);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE_COLOR);
 #endif // _DEBUG
 }
